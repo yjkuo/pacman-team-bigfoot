@@ -1,8 +1,11 @@
 package edu.rice.comp504.model;
 
+import edu.rice.comp504.model.cmd.ICharacterCmd;
+import edu.rice.comp504.model.cmd.SwitchStrategyCmd;
 import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
 import edu.rice.comp504.model.object.AObject;
+import edu.rice.comp504.model.object.Ghost;
 import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
 import edu.rice.comp504.model.strategy.PacmanStrategy;
@@ -14,7 +17,7 @@ import java.util.List;
 
 public class GameStore {
     private ACharacter pacman;
-    private List<ACharacter> ghosts;
+    private List<Ghost> ghosts;
     private int lives;
     private int currentScore;
     private int eatenDots;
@@ -102,7 +105,7 @@ public class GameStore {
      * Get the ghosts.
      * @return the ghosts.
      */
-    public List<ACharacter> getGhosts() {
+    public List<Ghost> getGhosts() {
         return ghosts;
     }
 
@@ -204,13 +207,6 @@ public class GameStore {
      * @param isEaten if the fruit is eaten
      */
     public void removeFruit(AItem fruit, boolean isEaten) {
-        //TODO
-    }
-
-    /**
-     * Update the state of the store.
-     */
-    public void updateStore(String direction) {
         //TODO
     }
 
