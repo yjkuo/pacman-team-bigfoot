@@ -1,12 +1,13 @@
-package edu.rice.comp504.model.strategy;
+package edu.rice.comp504.model.strategy.ghost;
 
 import edu.rice.comp504.model.object.ACharacter;
+import edu.rice.comp504.model.strategy.IUpdateStrategy;
 
 /**
  * The interface for update strategy of ghosts. The ghosts will use corresponding update strategies (chase or random walk) to
  * update its behaviors in the game.
  */
-public interface IUpdateGhostStrategy extends IUpdateStrategy{
+public interface IUpdateGhostStrategy extends IUpdateStrategy {
     /**
      * Update the state the Ghost.
      * @param pacman The pacman character to compare to.

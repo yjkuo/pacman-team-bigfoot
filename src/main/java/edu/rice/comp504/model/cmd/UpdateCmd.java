@@ -44,8 +44,6 @@ public class UpdateCmd implements ICharacterCmd{
                         Ghost ghost = (Ghost) context;
                         ghost.setStartLoc();
                     }
-
-
                 }
             }
         }
