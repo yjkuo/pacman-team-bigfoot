@@ -18,27 +18,26 @@ public class PacmanController {
         port(getHerokuAssignedPort());
         Gson gson = new Gson();
         ConcurrentHashMap<String, DispatchAdapter> map = new ConcurrentHashMap<>();
+        DispatchAdapter da = new DispatchAdapter();
 
         get("/initialize", (request, response) -> {
-            //TODO
-            return gson.toJson("Initialize the pacman world");
+            return gson.toJson(da.initializeGame(1, Integer.parseInt(request.queryParams("numberOfGhosts")), Integer.parseInt(request.queryParams("lives"))));
         });
 
         post("/update", (request, response) -> {
-            //TODO fill the endpoint
-            return gson.toJson("update the pacman world");
+            return gson.toJson(da.updateStore(request.queryParams("direction")));
         });
 
-        get("/clear", (request, response) -> {
-            //TODO
-            return gson.toJson("Clear the pacman world");
-        });
-
-
-        post("/setGameParameters", (request, response) -> {
-            //TODO
-            return gson.toJson("Set the game parameters");
-        });
+//        get("/clear", (request, response) -> {
+//            //TODO
+//            return gson.toJson("Clear the pacman world");
+//        });
+//
+//
+//        post("/setGameParameters", (request, response) -> {
+//            //TODO
+//            return gson.toJson("Set the game parameters");
+//        });
     }
 
     /**

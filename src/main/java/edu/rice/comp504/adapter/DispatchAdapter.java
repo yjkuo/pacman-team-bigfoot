@@ -3,6 +3,9 @@ package edu.rice.comp504.adapter;
 import edu.rice.comp504.model.GameStore;
 import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
+import edu.rice.comp504.model.object.AObject;
+
+import java.util.List;
 
 public class DispatchAdapter {
     private GameStore store;
@@ -11,16 +14,15 @@ public class DispatchAdapter {
      * Constructor.
      */
     public DispatchAdapter() {
-        //TODO initialize the dispatch
+        store = new GameStore();
     }
 
     /**
      * Initialize the game.
      * @return GameStore so that information can be displayed
      */
-    public GameStore initializeStore() {
-        //TODO initialize the game store
-        return null;
+    public List<AObject> initializeGame(int gameLevel, int numberOfGhosts, int lives) {
+        return store.init(gameLevel, numberOfGhosts, lives);
     }
 
     /**
@@ -59,9 +61,8 @@ public class DispatchAdapter {
      * Call the update method on all the characters to update their position in the pacman world (based on input direction
      * from user).
      */
-    public GameStore updateStore(String direction) {
-        //TODO
-        return null;
+    public List<AObject> updateStore(String direction) {
+        return store.updateStore(direction);
     }
 
     /**

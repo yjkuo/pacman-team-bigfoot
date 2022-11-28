@@ -7,6 +7,7 @@ let width = 560;
 let passageWidth = 20;
 let intervalID = -1;
 let gameStart = false;
+let latestDirection = "right";
 let gameState = {
     lives: 3,
     ghosts: 4,
@@ -47,10 +48,10 @@ const layout = [
     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,],
     [1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,],
-    [1,1,1,1,1,1,0,1,1,4,4,4,4,4,4,4,4,4,4,1,1,0,1,1,1,1,1,1,],
-    [1,1,1,1,1,1,0,1,1,4,1,1,1,2,2,1,1,1,4,1,1,0,1,1,1,1,1,1,],
-    [1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,],
-    [4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,4,0,0,0,4,4,4,4,4,4,],
+    [1,1,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,],
+    [1,1,1,1,1,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,1,1,1,1,1,],
+    [1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,],
+    [4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,0,0,0,0,4,4,4,4,4,4,],
     [1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,],
     [1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,],
     [1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,],
@@ -99,7 +100,7 @@ function createApp(canvas) {
                 }
                 switch(layout[i][j]) {
                     case 0:
-                    case 4: 
+                    // case 4:
                         app.drawDot(i, j, 3, "white");
                         break;
                     case 3:
@@ -200,8 +201,8 @@ function createApp(canvas) {
             intervalID = -1;
             c.fillStyle = "rgba(0, 0, 0, 0.5)";
             c.fillRect(0, 0, canvas.width, canvas.height);
-            c.font = "50px Comic Sans MS";
-            c.fillStyle = "red";
+            c.font = "50px Ariel";
+            c.fillStyle = "white";
             c.textAlign = "center";
             c.fillText("Paused", canvas.width / 2, canvas.height / 2);
         } else {
@@ -233,7 +234,9 @@ window.onload = function() {
     $("#restart-btn").click(() => {
         gameState.lives = $("#lives-dropdown").val();
         gameState.ghosts = $("#ghost-dropdown").val();
+        initialize();
     });
+    initialize();
 };
 
 function updateCanvas() {
@@ -246,18 +249,22 @@ addEventListener('keydown', (e) => {
         case 'ArrowRight':
             pacman.dir = 2;
             pacman.velocity.y = 1;
+            latestDirection = "right";
             break;
         case 'ArrowLeft':
             pacman.dir = 0;
             pacman.velocity.y = -1;
+            latestDirection = "left";
             break;
         case 'ArrowUp':
             pacman.dir = 1;
             pacman.velocity.x = -1;
+            latestDirection = "up";
             break;
         case 'ArrowDown':
             pacman.dir = 3;
             pacman.velocity.x = 1;
+            latestDirection = "down";
             break;
     }
 });
@@ -274,3 +281,13 @@ addEventListener('keyup', (e) => {
             break;
     }
 })
+
+function initialize() {
+    let payload = {
+        numberOfGhosts: $("#ghost-dropdown").val(),
+        lives: $("#lives-dropdown").val()
+    };
+    $.get("/initialize", payload, function(data) {});
+
+    // $.get("/chatroom/getMessages", payload, function(data) {});
+}

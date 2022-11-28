@@ -2,18 +2,20 @@ package edu.rice.comp504.model;
 
 import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
+import edu.rice.comp504.model.object.AObject;
+import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameStore {
     private ACharacter pacman;
     private List<ACharacter> ghosts;
-    private int maxLives;
+    private List<AObject> allObjects;
+    private int lives;
     private int currentScore;
-    private int highestScore;
     private int eatenDots;
     private int levelCount;
     private int numberOfGhosts;
@@ -27,32 +29,64 @@ public class GameStore {
     private int timeElapsed = 0;
     private int endTime;
     private int[][] layout;
+    private int passageWidth = 20;
 
     /**
      * Constructor.
-     * @param gameLevel Either level 1 or level 2
-     * @param numberOfGhosts Number of ghosts
-     * @param maxLives Number of lives of pacman
-     * @param highestScore Current highest score
      */
-    public GameStore(int gameLevel, int numberOfGhosts, int maxLives, int highestScore) {
-        this.levelCount = gameLevel;
-        this.numberOfGhosts = numberOfGhosts;
-        this.maxLives = maxLives;
-        this.highestScore = highestScore;
-        this.layout = new int[28][28];
+    public GameStore() {
+        pcs = new PropertyChangeSupport(this);
+        allObjects = new ArrayList<>();
+        this.layout = new int[][]{
+                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
+                {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
+                {1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,},
+                {1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,},
+                {1,0,1,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,0,0,0,0,0,1,},
+                {1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,},
+                {1,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,1,},
+                {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,},
+                {1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,},
+                {1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,},
+                {1,1,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,},
+                {1,1,1,1,1,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,1,1,1,1,1,},
+                {1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,},
+                {4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,0,0,0,0,4,4,4,4,4,4,},
+                {1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,},
+                {1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,},
+                {1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,},
+                {1,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,},
+                {1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,},
+                {1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,1,},
+                {1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,},
+                {1,0,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,},
+                {1,0,1,1,1,1,1,0,1,1,1,0,0,0,0,1,1,1,0,1,1,1,1,0,1,1,0,1,},
+                {1,0,0,0,0,0,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,0,1,1,0,1,},
+                {1,0,1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,0,1,1,0,1,},
+                {1,0,1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,0,1,1,0,1,},
+                {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+        };
+        Point loc = new Point(0,0);
+        int vel = 5;
+//        this.pacman = new ACharacter("pacman", loc, Point vel, "pacman", IUpdatePacmanStrategy updateStrategy,
+//        "right", "16");
     }
 
     /**
      * Initialize a new game with a level and settings.
      */
-    public void init() {
+    public List<AObject> init(int gameLevel, int numberOfGhosts, int lives) {
+        this.levelCount = gameLevel;
+        this.numberOfGhosts = numberOfGhosts;
+        this.lives = lives;
         currentScore = 0;
         eatenDots = 0;
         ghostScore = 200;
         portals = new int[2];
         numberOfFruits = 0;
         //TODO Add more intialization
+        return allObjects;
     }
 
     /**
@@ -96,22 +130,6 @@ public class GameStore {
         this.currentScore = currentScore;
     }
 
-    /**
-     * Get the highest score.
-     * @return the highest score.
-     */
-    public int getHighestScore() {
-        return highestScore;
-    }
-
-    /**
-     * Set the highest score.
-     * @param highestScore the highest score.
-     */
-    public void setHighestScore(int highestScore) {
-        this.highestScore = highestScore;
-    }
-
 
     /**
      * Get the number of fruits.
@@ -141,8 +159,8 @@ public class GameStore {
     public void setGameParameters(int gameLevel, int numGhosts, int numLives) {
         levelCount = gameLevel;
         numberOfGhosts = numGhosts;
-        maxLives = numLives;
-        init();
+        lives = numLives;
+//        init();
     }
 
     /**
@@ -191,9 +209,9 @@ public class GameStore {
     /**
      * Update the state of the store.
      */
-    public GameStore updateStore(String direction) {
+    public List<AObject> updateStore(String direction) {
         //TODO
-        return null;
+        return allObjects;
     }
 
     /**
