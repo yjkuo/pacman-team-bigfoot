@@ -16,7 +16,7 @@ public class StrategyFactory {
      * Only makes 1 strategy factory.
      * @return The strategy factory.
      */
-    public static StrategyFactory makeCmdFactory() {
+    public static StrategyFactory makeStrategyFactory() {
         if (singleton == null ) {
             singleton = new StrategyFactory();
         }
@@ -28,7 +28,7 @@ public class StrategyFactory {
      * @param type The type of the strategy.
      * @return The corresponding strategy.
      */
-    public IUpdateStrategy makeCmd(String type) {
+    public IUpdateStrategy makeStrategy(String type) {
         //TODO
         return null;
     }

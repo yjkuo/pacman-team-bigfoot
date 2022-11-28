@@ -1,9 +1,12 @@
 package edu.rice.comp504.adapter;
 
 import edu.rice.comp504.model.GameStore;
+import edu.rice.comp504.model.cmd.ICharacterCmd;
+import edu.rice.comp504.model.cmd.SwitchStrategyCmd;
 import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
 import edu.rice.comp504.model.object.AObject;
+import edu.rice.comp504.model.object.Ghost;
 
 import java.util.List;
 
@@ -55,7 +58,8 @@ public class DispatchAdapter {
      * @param ghost The eaten ghost.
      */
     public void eatGhost(ACharacter ghost) {
-        //TODO
+        store.setCurrentScore(store.getCurrentScore() + store.getGhostScore());
+        store.setGhostScore(store.getGhostScore() * 2);
     }
 
     /**
@@ -63,8 +67,61 @@ public class DispatchAdapter {
      * from user).
      */
     public GameStore updateStore(String direction) {
-        store.updateStore(direction);
+        //TODO
         return store;
+    }
+
+    /**
+     * Extra action for characters.
+     */
+    private void ghostsAction() {
+        for (Ghost ghost : store.getGhosts()) {
+            ICharacterCmd switchCmd = null;
+            if (ghost.isFlashing() && ghost.getFlashingTimer() <= 0) {
+                ghost.setFlashing(false);
+                switchCmd = resetGhostStrategy(ghost, switchCmd);
+                store.setGhostScore(200);
+            } else if ((ghost.getLoc().equals(ghost.getOriginalLoc()) && ghost.isDead())) {
+                switchCmd = resetGhostStrategy(ghost, switchCmd);
+                ghost.setDead(false);
+            } else if (ghost.isDead()) {
+                if (!ghost.getUpdateStrategy().getName().equals("return to base")) {
+                    switchCmd = new SwitchStrategyCmd("ReturnToBase");
+                    this.eatGhost(ghost);
+                }
+            } else if (ghost.isFlashing()) {
+                switchCmd = new SwitchStrategyCmd("RunAway");
+            }
+            if (switchCmd != null) {
+                switchCmd.execute(ghost);
+            }
+        }
+    }
+
+    /**
+     * Reset the ghost strategy based on ghost's color.
+     * @param ghost The ghost object.
+     * @param switchCmd Switch Command.
+     * @return The Switch Command.
+     */
+    private ICharacterCmd resetGhostStrategy(Ghost ghost, ICharacterCmd switchCmd) {
+        switch (ghost.getColor()) {
+            case "red":
+                switchCmd = new SwitchStrategyCmd("Chase");
+                break;
+            case "blue":
+                switchCmd = new SwitchStrategyCmd("Chase");
+                break;
+            case "orange":
+                switchCmd = new SwitchStrategyCmd("Walk");
+                break;
+            case "pink":
+                switchCmd = new SwitchStrategyCmd("Walk");
+                break;
+            default:
+                break;
+        }
+        return switchCmd;
     }
 
     /**
