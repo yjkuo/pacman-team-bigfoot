@@ -98,17 +98,17 @@ function createApp(canvas) {
                 if (layout[i][j] !== 1) {
                     app.drawPassageBlock(i, j);
                 }
-                switch(layout[i][j]) {
-                    case 0:
-                    // case 4:
-                        app.drawDot(i, j, 3, "white");
-                        break;
-                    case 3:
-                        app.drawDot(i, j, 6, "white");
-                        break;
-                    default: 
-                        break;
-                }
+                // switch(layout[i][j]) {
+                //     case 0:
+                //     // case 4:
+                //         app.drawDot(i, j, 3, "white");
+                //         break;
+                //     case 3:
+                //         app.drawDot(i, j, 6, "white");
+                //         break;
+                //     default:
+                //         break;
+                // }
             }
         }
         pacman.state = !pacman.state;
@@ -121,8 +121,8 @@ function createApp(canvas) {
         for (let i = 0; i < gameState.ghosts; ++i) {
             app.drawGhost(13, 12 + i, pacman.state, i);
         }
-        app.drawFruit(1, 12);
-        app.drawFruit(20, 4);
+        // app.drawFruit(1, 12);
+        // app.drawFruit(20, 4);
 
         // White line at ghost area door
         c.fillStyle = 'white';
@@ -214,6 +214,7 @@ function createApp(canvas) {
 
     return {
         clear,
+        drawBackground,
         drawGameBoard,
         drawPassageBlock,
         drawDot,

@@ -69,10 +69,10 @@ public class GameStore {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         pacmanStrategy = new PacmanStrategy(layout);
-        Point loc = new Point(0,0);
+        Point loc = new Point(17 * passageWidth + passageWidth/2,13 * passageWidth + passageWidth / 2);
         int vel = 5;
         this.pacman = new ACharacter("pacman", loc, vel, "pacman", pacmanStrategy,
-        "right", passageWidth);
+        2, passageWidth);
     }
 
     /**

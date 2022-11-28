@@ -13,8 +13,8 @@ import java.beans.PropertyChangeListener;
 public class ACharacter extends AObject implements PropertyChangeListener {
     private int vel;
     private IUpdateStrategy updateStrategy;
-    // left, right, up and down
-    private String direction;
+    // 0 is left, 1 is up, 2 is right, and 3 is down
+    private int direction;
     private final Point originalLoc;
     private int size;
 
@@ -28,7 +28,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * @param direction The character direction
      */
     public ACharacter(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy,
-                      String direction, int size) {
+                      int direction, int size) {
         super(name, loc, color);
         this.vel = vel;
         this.updateStrategy = updateStrategy;
@@ -73,7 +73,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Get the ACharacter direction.
      * @return The ACharacter direction.
      */
-    public String getDirection() {
+    public int getDirection() {
         return direction;
     }
 
@@ -81,7 +81,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Set the direction of the ACharacter.
      * @param direction  The new direction
      */
-    public void setDirection(String direction) {
+    public void setDirection(int direction) {
         this.direction = direction;
     }
 
