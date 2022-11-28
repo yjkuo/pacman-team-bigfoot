@@ -15,6 +15,7 @@ import java.util.List;
 public class GameStore {
     private ACharacter pacman;
     private List<ACharacter> ghosts;
+    private List<AItem> items;
     private int lives;
     private int currentScore;
     private int eatenDots;
@@ -32,6 +33,7 @@ public class GameStore {
     private int[][] layout;
     private int passageWidth = 20;
     private IUpdateStrategy pacmanStrategy;
+    Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
 
     /**
      * Constructor.
@@ -69,10 +71,25 @@ public class GameStore {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         pacmanStrategy = new PacmanStrategy(layout);
-        Point loc = new Point(17 * passageWidth + passageWidth/2,13 * passageWidth + passageWidth / 2);
         int vel = 5;
-        this.pacman = new ACharacter("pacman", loc, vel, "pacman", pacmanStrategy,
-        2, passageWidth);
+        this.pacman = new ACharacter("pacman", pacmanStartLoc, vel, "pacman", pacmanStrategy,
+        2, passageWidth - 4);
+
+        items = new ArrayList<>();
+        for (int i = 0; i < this.layout.length; i++) {
+            for (int j = 0; j < this.layout[0].length; j++) {
+                if (this.layout[i][j] == 0) {
+                    Point smallDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                    AItem smallDot = new AItem("smallDot", smallDotLoc, "white", 10, 3);
+                    items.add(smallDot);
+                }
+                else if (this.layout[i][j] == 3) {
+                    Point largeDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                    AItem largeDot = new AItem("bigDot", largeDotLoc, "white", 50, 6);
+                    items.add(largeDot);
+                }
+            }
+        }
     }
 
     /**

@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 public class AItem extends AObject {
     private boolean isEaten;
     private int score;
+    private int size;
 
     /**
      * Constructor.
@@ -17,10 +18,11 @@ public class AItem extends AObject {
      * @param loc  The location of the AItem on the canvas
      * @param color The AItem color
      */
-    public AItem(String name, Point loc, String color, int score) {
+    public AItem(String name, Point loc, String color, int score, int size) {
         super(name, loc, color);
         this.isEaten = false;
         this.score = score;
+        this.size = size;
     }
 
     /**
@@ -45,5 +47,22 @@ public class AItem extends AObject {
      */
     public int getScore() {
         return score;
+    }
+
+
+    /**
+     * Get the size.
+     * @return The size.
+     */
+    public int getSize() {
+        return this.size;
+    }
+
+    /**
+     * Set the size.
+     * @param size The size.
+     */
+    public void setSize(int size) {
+        this.size = size;
     }
 }

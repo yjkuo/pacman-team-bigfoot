@@ -6,6 +6,7 @@ let gameStartY = 90;
 let width = 560;
 let passageWidth = 20;
 let intervalID = -1;
+let items = [];
 let gameStart = false;
 let latestDirection = "right";
 let gameState = {
@@ -14,7 +15,7 @@ let gameState = {
     score: 0
 };
 let pacman = {
-    position: {x: 1, y: 2},
+    position: {x: 50, y: 30},
     velocity: {x: 0, y: 0},
     dir: 2,
     state: false
@@ -111,12 +112,16 @@ function createApp(canvas) {
                 // }
             }
         }
+        items.forEach(item => {
+            if (item.name === "smallDot") app.drawDot(item.loc.x, item.loc.y, 3, "white");
+            else if (item.name === "bigDot") app.drawDot(item.loc.x, item.loc.y, 6, "white");
+        })
         pacman.state = !pacman.state;
-        if (!detectCollision()) {
-            pacman.position.x += pacman.velocity.x;
-            pacman.position.y += pacman.velocity.y;
-            layout[pacman.position.x][pacman.position.y] = 2;
-        }
+        // if (!detectCollision()) {
+        //     pacman.position.x += pacman.velocity.x;
+        //     pacman.position.y += pacman.velocity.y;
+        //     layout[pacman.position.x][pacman.position.y] = 2;
+        // }
         app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
         for (let i = 0; i < gameState.ghosts; ++i) {
             app.drawGhost(13, 12 + i, pacman.state, i);
@@ -131,8 +136,10 @@ function createApp(canvas) {
     }
 
     let drawDot = function(row, column, radius, color) {
-        let x = gameStartX + passageWidth * column + passageWidth / 2;
-        let y = gameStartY + passageWidth * row + passageWidth / 2;
+        // let x = gameStartX + passageWidth * column + passageWidth / 2;
+        // let y = gameStartY + passageWidth * row + passageWidth / 2;
+        let x = gameStartX + row;
+        let y = gameStartY + column;
         c.fillStyle = color;
         c.beginPath();
         c.arc(x, y, radius, 0, 2 * Math.PI, false);
@@ -151,10 +158,12 @@ function createApp(canvas) {
     };
 
     let drawPacman = function(row, column, animate, direction) {
-        let x = gameStartX + passageWidth * column + passageWidth / 2;
-        let y = gameStartY + passageWidth * row + passageWidth / 2;
+        // let x = gameStartX + passageWidth * column + passageWidth / 2;
+        // let y = gameStartY + passageWidth * row + passageWidth / 2;
+        let x = gameStartX + row;
+        let y = gameStartY + column;
         let img = animate? pacmanImg1: pacmanImg2;
-        let size = passageWidth - 5
+        let size = passageWidth - 5;
         c.save();
         c.translate(x,y);
         c.rotate(Math.PI / 2 * direction);
@@ -229,7 +238,7 @@ function createApp(canvas) {
 
 window.onload = function() {
     app = createApp(document.querySelector("canvas"));
-    intervalID = setInterval(updateCanvas, 200);
+    // intervalID = setInterval(updateCanvas, 100);
     gameStart = true;
     $("#pause-btn").click(() => app.gamePause());
     $("#restart-btn").click(() => {
@@ -241,11 +250,17 @@ window.onload = function() {
 };
 
 function updateCanvas() {
-    app.clear()
-    app.drawGameBoard();
+    let payload = {
+        direction: latestDirection,
+    };
+    $.post("/update", payload, function(data) {
+        data = JSON.parse(data);
+        handleGameData(data);
+    });
 }
 
 addEventListener('keydown', (e) => {
+    if (intervalID === -1) intervalID = setInterval(updateCanvas, 100);
     switch(e.key) {
         case 'ArrowRight':
             pacman.dir = 2;
@@ -283,14 +298,22 @@ addEventListener('keyup', (e) => {
     }
 })
 
+function handleGameData(data) {
+    pacman.position.x = data.pacman.loc.x;
+    pacman.position.y = data.pacman.loc.y;
+    items = data.items;
+    app.clear()
+    app.drawGameBoard();
+}
+
 function initialize() {
     let payload = {
         numberOfGhosts: $("#ghost-dropdown").val(),
         lives: $("#lives-dropdown").val()
     };
     $.get("/initialize", payload, function(data) {
-        console.log(data)
+        data = JSON.parse(data);
+        console.log(data);
+        handleGameData(data);
     });
-
-    // $.get("/chatroom/getMessages", payload, function(data) {});
 }
