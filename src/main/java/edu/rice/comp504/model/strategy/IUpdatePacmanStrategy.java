@@ -9,9 +9,11 @@ import edu.rice.comp504.model.object.ACharacter;
 public interface IUpdatePacmanStrategy extends IUpdateStrategy{
     /**
      * Update the state of Pacman.
-     * @param pacman The pacman to apply the strategy to.
+     *
+     * @param pacman     The pacman to apply the strategy to.
+     * @param aCharacter
      */
-    public void updateState(ACharacter pacman);
+    public void updateState(ACharacter pacman, ACharacter aCharacter);
 
 
     /**
