@@ -1,6 +1,7 @@
 package edu.rice.comp504.model.object;
 
 import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
+import edu.rice.comp504.model.strategy.IUpdateStrategy;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -10,10 +11,10 @@ import java.beans.PropertyChangeListener;
  * This class represents the moving characters in the game (ghost and pacman).
  */
 public class ACharacter extends AObject implements PropertyChangeListener {
-    private Point vel;
-    private IUpdatePacmanStrategy updateStrategy;
-    // 1 is left, 2 is up, 3 is right, and 4 is down
-    private int direction;
+    private int vel;
+    private IUpdateStrategy updateStrategy;
+    // left, right, up and down
+    private String direction;
     private final Point originalLoc;
     private int size;
 
@@ -26,8 +27,8 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * @param updateStrategy  The object updateStrategy
      * @param direction The character direction
      */
-    public ACharacter(String name, Point loc, Point vel, String color, IUpdatePacmanStrategy updateStrategy,
-                      int direction, int size) {
+    public ACharacter(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy,
+                      String direction, int size) {
         super(name, loc, color);
         this.vel = vel;
         this.updateStrategy = updateStrategy;
@@ -40,7 +41,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Get the ACharacter updateStrategy.
      * @return The ACharacter updateStrategy.
      */
-    public IUpdatePacmanStrategy getUpdateStrategy() {
+    public IUpdateStrategy getUpdateStrategy() {
         return this.updateStrategy;
     }
 
@@ -48,7 +49,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Set the updateStrategy of the ACharacter.
      * @param updateStrategy  The new updateStrategy
      */
-    public void setUpdateStrategy(IUpdatePacmanStrategy updateStrategy) {
+    public void setUpdateStrategy(IUpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;
     }
 
@@ -56,7 +57,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Get the velocity of the ACharacter.
      * @return The ACharacter velocity
      */
-    public Point getVel() {
+    public int getVel() {
         return this.vel;
     }
 
@@ -64,7 +65,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Set the velocity of the ACharacter.
      * @param vel The new ACharacter velocity
      */
-    public void setVel(Point vel) {
+    public void setVel(int vel) {
         this.vel = vel;
     }
 
@@ -72,7 +73,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Get the ACharacter direction.
      * @return The ACharacter direction.
      */
-    public int getDirection() {
+    public String getDirection() {
         return direction;
     }
 
@@ -80,7 +81,7 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      * Set the direction of the ACharacter.
      * @param direction  The new direction
      */
-    public void setDirection(int direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 

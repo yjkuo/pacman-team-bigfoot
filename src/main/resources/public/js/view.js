@@ -287,7 +287,9 @@ function initialize() {
         numberOfGhosts: $("#ghost-dropdown").val(),
         lives: $("#lives-dropdown").val()
     };
-    $.get("/initialize", payload, function(data) {});
+    $.get("/initialize", payload, function(data) {
+        console.log(data)
+    });
 
     // $.get("/chatroom/getMessages", payload, function(data) {});
 }

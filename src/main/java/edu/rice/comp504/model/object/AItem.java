@@ -7,7 +7,7 @@ import java.beans.PropertyChangeListener;
 /**
  * This class represents the unmoving items in the game (small dots, big dots, and fruits).
  */
-public class AItem extends AObject implements PropertyChangeListener {
+public class AItem extends AObject {
     private boolean isEaten;
     private int score;
 
@@ -45,13 +45,5 @@ public class AItem extends AObject implements PropertyChangeListener {
      */
     public int getScore() {
         return score;
-    }
-
-    /**
-     * Item respond to property change event.
-     * @param evt changed event.
-     */
-    public void propertyChange(PropertyChangeEvent evt) {
-        //TODO implement property change
     }
 }

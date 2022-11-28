@@ -4,6 +4,8 @@ import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
 import edu.rice.comp504.model.object.AObject;
 import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
+import edu.rice.comp504.model.strategy.IUpdateStrategy;
+import edu.rice.comp504.model.strategy.PacmanStrategy;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
@@ -13,7 +15,6 @@ import java.util.List;
 public class GameStore {
     private ACharacter pacman;
     private List<ACharacter> ghosts;
-    private List<AObject> allObjects;
     private int lives;
     private int currentScore;
     private int eatenDots;
@@ -24,19 +25,19 @@ public class GameStore {
     private final int ghostFlashingTime = 10000; // how long ghost keeps flashing
     private final int maxGhosts = 4;
     private transient int[] portals = new int[2];
-    private PropertyChangeSupport pcs;
+//    private PropertyChangeSupport pcs;
     public static final int updatePeriod = 60;
     private int timeElapsed = 0;
     private int endTime;
     private int[][] layout;
     private int passageWidth = 20;
+    private IUpdateStrategy pacmanStrategy;
 
     /**
      * Constructor.
      */
     public GameStore() {
-        pcs = new PropertyChangeSupport(this);
-        allObjects = new ArrayList<>();
+//        pcs = new PropertyChangeSupport(this);
         this.layout = new int[][]{
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
                 {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
@@ -67,16 +68,17 @@ public class GameStore {
                 {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
+        pacmanStrategy = new PacmanStrategy(layout);
         Point loc = new Point(0,0);
         int vel = 5;
-//        this.pacman = new ACharacter("pacman", loc, Point vel, "pacman", IUpdatePacmanStrategy updateStrategy,
-//        "right", "16");
+        this.pacman = new ACharacter("pacman", loc, vel, "pacman", pacmanStrategy,
+        "right", passageWidth);
     }
 
     /**
      * Initialize a new game with a level and settings.
      */
-    public List<AObject> init(int gameLevel, int numberOfGhosts, int lives) {
+    public void init(int gameLevel, int numberOfGhosts, int lives) {
         this.levelCount = gameLevel;
         this.numberOfGhosts = numberOfGhosts;
         this.lives = lives;
@@ -86,7 +88,6 @@ public class GameStore {
         portals = new int[2];
         numberOfFruits = 0;
         //TODO Add more intialization
-        return allObjects;
     }
 
     /**
@@ -209,9 +210,8 @@ public class GameStore {
     /**
      * Update the state of the store.
      */
-    public List<AObject> updateStore(String direction) {
+    public void updateStore(String direction) {
         //TODO
-        return allObjects;
     }
 
     /**

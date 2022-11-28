@@ -21,8 +21,9 @@ public class DispatchAdapter {
      * Initialize the game.
      * @return GameStore so that information can be displayed
      */
-    public List<AObject> initializeGame(int gameLevel, int numberOfGhosts, int lives) {
-        return store.init(gameLevel, numberOfGhosts, lives);
+    public GameStore initializeGame(int gameLevel, int numberOfGhosts, int lives) {
+        store.init(gameLevel, numberOfGhosts, lives);
+        return store;
     }
 
     /**
@@ -61,8 +62,9 @@ public class DispatchAdapter {
      * Call the update method on all the characters to update their position in the pacman world (based on input direction
      * from user).
      */
-    public List<AObject> updateStore(String direction) {
-        return store.updateStore(direction);
+    public GameStore updateStore(String direction) {
+        store.updateStore(direction);
+        return store;
     }
 
     /**
