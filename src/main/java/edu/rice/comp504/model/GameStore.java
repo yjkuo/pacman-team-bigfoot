@@ -74,25 +74,10 @@ public class GameStore {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         pacmanStrategy = new PacmanStrategy(layout);
-        int vel = 5;
-        this.pacman = new ACharacter("pacman", pacmanStartLoc, vel, "pacman", pacmanStrategy,
-        2, passageWidth - 4);
+        this.pacman = new ACharacter("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
+        2, passageWidth);
 
         items = new ArrayList<>();
-        for (int i = 0; i < this.layout.length; i++) {
-            for (int j = 0; j < this.layout[0].length; j++) {
-                if (this.layout[i][j] == 0) {
-                    Point smallDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
-                    AItem smallDot = new AItem("smallDot", smallDotLoc, "white", 10, 3);
-                    items.add(smallDot);
-                }
-                else if (this.layout[i][j] == 3) {
-                    Point largeDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
-                    AItem largeDot = new AItem("bigDot", largeDotLoc, "white", 50, 6);
-                    items.add(largeDot);
-                }
-            }
-        }
     }
 
     /**
@@ -107,6 +92,24 @@ public class GameStore {
         ghostScore = 200;
         portals = new int[2];
         numberOfFruits = 0;
+
+        pacman.setLoc(pacmanStartLoc);
+        pacman.setDirection(2);
+        items.clear();
+        for (int i = 0; i < this.layout.length; i++) {
+            for (int j = 0; j < this.layout[0].length; j++) {
+                if (this.layout[i][j] == 0) {
+                    Point smallDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                    AItem smallDot = new AItem("smallDot", smallDotLoc, "white", 10, 3);
+                    items.add(smallDot);
+                }
+                else if (this.layout[i][j] == 3) {
+                    Point largeDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                    AItem largeDot = new AItem("bigDot", largeDotLoc, "white", 50, 6);
+                    items.add(largeDot);
+                }
+            }
+        }
         //TODO Add more intialization
     }
 
