@@ -1,5 +1,7 @@
 package edu.rice.comp504.model.strategy;
 
+import edu.rice.comp504.adapter.DispatchAdapter;
+import edu.rice.comp504.model.GameStore;
 import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.AItem;
 import edu.rice.comp504.model.object.Ghost;
@@ -28,6 +30,7 @@ public class PacmanStrategy implements IUpdateStrategy {
      * @param aCharacter
      */
     public void updateState(ACharacter character, ACharacter aCharacter) {
+        GameStore store = DispatchAdapter.getStore();
         Pacman pacman = (Pacman) character;
         int nextDirection = pacman.getNextDirection();
 
@@ -38,15 +41,21 @@ public class PacmanStrategy implements IUpdateStrategy {
         int direction = pacman.getDirection();
         if (!pacman.detectCollisionWithWalls(direction, layout)) {
             Point locAfterMoveInDirection = pacman.locationAfterMoveInDirection(direction);
+
             for (Ghost ghost : ghosts) {
                 if (pacman.detectCollisionObj(ghost)) {
                     pacman.reduceLive();
                 }
             }
+            AItem eaten = null;
             for (AItem item : items) {
                 if (pacman.detectCollisionObj(item)) {
-
+                    eaten = item;
+                    break;
                 }
+            }
+            if (eaten != null) {
+                store.removeDot(eaten, true);
             }
             if (locAfterMoveInDirection.x + pacman.getSize()/2 >= pacman.getSize() * layout.length) {
                 locAfterMoveInDirection.x = pacman.getSize()/2;

@@ -212,6 +212,8 @@ public class GameStore {
      */
     public void removeDot(AItem dot, boolean isEaten) {
         //TODO
+        items.remove(dot);
+        currentScore += dot.getScore();
     }
 
     /**

@@ -11,7 +11,7 @@ import edu.rice.comp504.model.object.Ghost;
 import java.util.List;
 
 public class DispatchAdapter {
-    private GameStore store;
+    private static GameStore store;
 
     /**
      * Constructor.
@@ -145,8 +145,8 @@ public class DispatchAdapter {
      * Get game store.
      * @return The game store.
      */
-    public GameStore getStore() {
+    public static GameStore getStore() {
         //TODO
-        return null;
+        return store;
     }
 }

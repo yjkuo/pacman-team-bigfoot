@@ -303,6 +303,7 @@ function handleGameData(data) {
     pacman.position.y = data.pacman.loc.y;
     pacman.dir = data.pacman.direction;
     items = data.items;
+    gameState.score = data.currentScore;
     app.clear()
     app.drawGameBoard();
 }
