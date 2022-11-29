@@ -71,11 +71,12 @@ public class GameStore {
                 {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
-        pacmanStrategy = new PacmanStrategy(layout);
-        this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
-        2, passageWidth);
 
+        ghosts = new ArrayList<>();
         items = new ArrayList<>();
+        pacmanStrategy = new PacmanStrategy(layout, ghosts, items);
+        this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
+                2, passageWidth);
     }
 
     /**
@@ -91,8 +92,8 @@ public class GameStore {
         portals = new int[2];
         numberOfFruits = 0;
 
-        pacman.setLoc(pacmanStartLoc);
-        pacman.setDirection(2);
+//        pacman.setLoc(pacmanStartLoc);
+//        pacman.setDirection(2);
         items.clear();
         for (int i = 0; i < this.layout.length; i++) {
             for (int j = 0; j < this.layout[0].length; j++) {
@@ -109,6 +110,9 @@ public class GameStore {
             }
         }
         //TODO Add more intialization
+        pacmanStrategy = new PacmanStrategy(this.layout, this.ghosts, this.items);
+        this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
+                2, passageWidth);
     }
 
     /**

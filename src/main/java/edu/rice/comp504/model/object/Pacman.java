@@ -72,6 +72,24 @@ public class Pacman extends ACharacter{
         this.nextDirection = direction;
     }
 
+    /**
+     * Check if pacman collide with ghost
+     * @param obj The object to check
+     */
+    public boolean detectCollisionObj(AObject obj) {
+        Point ghostLoc = obj.getLoc();
+        int ghostSize = obj.getSize();
+        Point loc = this.getLoc();
+        int size = this.getSize();
+        if (loc.x + size > ghostLoc.x &&
+            loc.x < ghostLoc.x + ghostSize &&
+            loc.y + size > ghostLoc.y &&
+            loc.y < ghostLoc.y + ghostSize ) {
+            return true;
+        }
+        return false;
+    }
+
     public void executeCommand(ICharacterCmd command) {
         command.execute(this);
     }

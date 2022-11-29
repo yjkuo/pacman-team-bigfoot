@@ -10,16 +10,19 @@ public class AObject {
     private Point loc;
     private String color;
 
+    int size;
+
     /**
      * Constructor for the AObject class.
      *
      * @param loc   The location of the object on the canvas
      * @param name  The name of the object
      */
-    public AObject(String name, Point loc, String color) {
+    public AObject(String name, Point loc, String color, int size) {
         this.name = name;
         this.loc = loc;
         this.color = color;
+        this.size = size;
     }
 
     /**
@@ -68,5 +71,21 @@ public class AObject {
      */
     public void setLoc(Point loc) {
         this.loc = loc;
+    }
+
+    /**
+     * Get the size.
+     * @return The size.
+     */
+    public int getSize() {
+        return this.size;
+    }
+
+    /**
+     * Set the size.
+     * @param size The size.
+     */
+    public void setSize(int size) {
+        this.size = size;
     }
 }

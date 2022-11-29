@@ -16,7 +16,6 @@ public class ACharacter extends AObject implements PropertyChangeListener {
     // 0 is left, 1 is up, 2 is right, and 3 is down
     private int direction;
     private final Point originalLoc;
-    private int size;
 
     /**
      * Constructor.
@@ -29,12 +28,11 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      */
     public ACharacter(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy,
                       int direction, int size) {
-        super(name, loc, color);
+        super(name, loc, color, size);
         this.vel = vel;
         this.updateStrategy = updateStrategy;
         this.direction = direction;
         this.originalLoc = new Point(loc.x, loc.y);
-        this.size = size;
     }
 
     /**
@@ -93,22 +91,6 @@ public class ACharacter extends AObject implements PropertyChangeListener {
         return originalLoc;
     }
 
-
-    /**
-     * Get the size of the ACharacter.
-     * @return The ACharacter size.
-     */
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * Set the size of the ACharacter.
-     * @param size The ACharacter size.
-     */
-    public void setSize(int size) {
-        size = size;
-    }
 
 
     public Point locationAfterMoveInDirection(int direction) {
