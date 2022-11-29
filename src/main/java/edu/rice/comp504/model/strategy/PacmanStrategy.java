@@ -10,9 +10,11 @@ public class PacmanStrategy implements IUpdateStrategy {
     }
     /**
      * Update the state of a character.
-     * @param character The character to apply the strategy to.
+     *
+     * @param character  The character to apply the strategy to.
+     * @param aCharacter
      */
-    public void updateState(ACharacter character) {
+    public void updateState(ACharacter character, ACharacter aCharacter) {
 
     }
 

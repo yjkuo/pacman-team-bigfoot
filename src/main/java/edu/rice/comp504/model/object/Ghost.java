@@ -10,6 +10,7 @@ public class Ghost extends ACharacter{
     private boolean isFlashing;
     private boolean isDead;
     private int flashingTimer;
+    private Point startLoc;
 
     /**
      * Constructor.
@@ -28,6 +29,7 @@ public class Ghost extends ACharacter{
         this.isFlashing = isFlashing;
         this.isDead = isDead;
         this.flashingTimer = flashingTimer;
+        this.startLoc = loc;
     }
 
     /**
@@ -44,6 +46,13 @@ public class Ghost extends ACharacter{
      */
     public void setFlashing(boolean flashing) {
         this.isFlashing = flashing;
+    }
+
+    /**
+     * Set the Ghost to its spawn location.
+     */
+    public void setStartLoc() {
+        setLoc(this.startLoc);
     }
 
     /**
