@@ -66,8 +66,8 @@ public class DispatchAdapter {
      * Call the update method on all the characters to update their position in the pacman world (based on input direction
      * from user).
      */
-    public GameStore updateStore(String direction) {
-        //TODO
+    public GameStore updateStore(int direction) {
+        store.update(direction);
         return store;
     }
 

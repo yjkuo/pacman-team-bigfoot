@@ -8,7 +8,7 @@ let passageWidth = 20;
 let intervalID = -1;
 let items = [];
 let gameStart = false;
-let latestDirection = "right";
+let latestDirection = 2;
 let gameState = {
     lives: 3,
     ghosts: 4,
@@ -263,24 +263,24 @@ addEventListener('keydown', (e) => {
     if (intervalID === -1) intervalID = setInterval(updateCanvas, 100);
     switch(e.key) {
         case 'ArrowRight':
-            pacman.dir = 2;
-            pacman.velocity.y = 1;
-            latestDirection = "right";
+            // pacman.dir = 2;
+            // pacman.velocity.y = 1;
+            latestDirection = 2;
             break;
         case 'ArrowLeft':
-            pacman.dir = 0;
-            pacman.velocity.y = -1;
-            latestDirection = "left";
+            // pacman.dir = 0;
+            // pacman.velocity.y = -1;
+            latestDirection = 0;
             break;
         case 'ArrowUp':
-            pacman.dir = 1;
-            pacman.velocity.x = -1;
-            latestDirection = "up";
+            // pacman.dir = 1;
+            // pacman.velocity.x = -1;
+            latestDirection = 1;
             break;
         case 'ArrowDown':
-            pacman.dir = 3;
-            pacman.velocity.x = 1;
-            latestDirection = "down";
+            // pacman.dir = 3;
+            // pacman.velocity.x = 1;
+            latestDirection = 3;
             break;
     }
 });
@@ -301,6 +301,7 @@ addEventListener('keyup', (e) => {
 function handleGameData(data) {
     pacman.position.x = data.pacman.loc.x;
     pacman.position.y = data.pacman.loc.y;
+    pacman.dir = data.pacman.direction;
     items = data.items;
     app.clear()
     app.drawGameBoard();

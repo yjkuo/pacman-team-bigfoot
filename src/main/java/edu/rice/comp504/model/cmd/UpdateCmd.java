@@ -23,7 +23,7 @@ public class UpdateCmd implements ICharacterCmd{
 
     @Override
     public void execute(ACharacter context) {
-
+        context.getUpdateStrategy().updateState(context, context);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class PacmanController {
         });
 
         post("/update", (request, response) -> {
-            return gson.toJson(da.updateStore(request.queryParams("direction")));
+            return gson.toJson(da.updateStore(Integer.parseInt(request.queryParams("direction"))));
         });
 
 //        get("/clear", (request, response) -> {

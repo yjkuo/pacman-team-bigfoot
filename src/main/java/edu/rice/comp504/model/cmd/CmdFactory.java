@@ -27,6 +27,9 @@ public class CmdFactory {
      */
     public ICharacterCmd makeCmd(String type) {
         //TODO
+        if (type == "Update") {
+            return UpdateCmd.makeCmd();
+        }
         return null;
     }
 }

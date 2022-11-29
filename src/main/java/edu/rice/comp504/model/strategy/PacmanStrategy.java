@@ -1,6 +1,11 @@
 package edu.rice.comp504.model.strategy;
 
 import edu.rice.comp504.model.object.ACharacter;
+import edu.rice.comp504.model.object.Pacman;
+import java.lang.Math;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class PacmanStrategy implements IUpdateStrategy {
     private int[][] layout;
@@ -8,6 +13,7 @@ public class PacmanStrategy implements IUpdateStrategy {
     public PacmanStrategy(int[][] layout) {
         this.layout = layout;
     }
+
     /**
      * Update the state of a character.
      *
@@ -15,7 +21,25 @@ public class PacmanStrategy implements IUpdateStrategy {
      * @param aCharacter
      */
     public void updateState(ACharacter character, ACharacter aCharacter) {
+        Pacman pacman = (Pacman) character;
 
+        int nextDirection = pacman.getNextDirection();
+
+        if (nextDirection != pacman.getDirection() && !pacman.detectCollisionWithWalls(nextDirection, layout)) {
+            pacman.setDirection(nextDirection);
+        }
+
+        int direction = pacman.getDirection();
+        if (!pacman.detectCollisionWithWalls(direction, layout)) {
+            Point locAfterMoveInDirection = pacman.locationAfterMoveInDirection(direction);
+            if (locAfterMoveInDirection.x + pacman.getSize()/2 >= pacman.getSize() * layout.length) {
+                locAfterMoveInDirection.x = pacman.getSize()/2;
+            }
+            else if (locAfterMoveInDirection.x - pacman.getSize()/2 <= 0) {
+                locAfterMoveInDirection.x =(pacman.getSize() * layout.length) - (pacman.getSize()/2);
+            }
+            pacman.setLoc(locAfterMoveInDirection);
+        }
     }
 
 

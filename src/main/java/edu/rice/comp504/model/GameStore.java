@@ -1,11 +1,9 @@
 package edu.rice.comp504.model;
 
+import edu.rice.comp504.model.cmd.CmdFactory;
 import edu.rice.comp504.model.cmd.ICharacterCmd;
 import edu.rice.comp504.model.cmd.SwitchStrategyCmd;
-import edu.rice.comp504.model.object.ACharacter;
-import edu.rice.comp504.model.object.AItem;
-import edu.rice.comp504.model.object.AObject;
-import edu.rice.comp504.model.object.Ghost;
+import edu.rice.comp504.model.object.*;
 import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
 import edu.rice.comp504.model.strategy.PacmanStrategy;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameStore {
-    private ACharacter pacman;
+    private Pacman pacman;
     private List<AItem> items;
     private List<Ghost> ghosts;
     private int lives;
@@ -74,7 +72,7 @@ public class GameStore {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         pacmanStrategy = new PacmanStrategy(layout);
-        this.pacman = new ACharacter("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
+        this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
         2, passageWidth);
 
         items = new ArrayList<>();
@@ -235,5 +233,13 @@ public class GameStore {
      */
     public void removeAll() {
         //TODO
+    }
+
+    public void update(int direction) {
+        pacman.setNextDirection(direction);
+        pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
+
+
+
     }
 }
