@@ -174,7 +174,9 @@ function createApp(canvas) {
         let ghostImg1 = new Image();
         let ghostImg2 = new Image();
         if (ghostData.isFlashing) {
-            let flashState = ghostFlashing > 1? 'A': 'B';
+            let flashState
+            if (ghostData.flashingTimer > 5) flashState = 'A'
+            else flashState= ghostFlashing > 1? 'A': 'B';
             ghostImg1.src = './assets/sprites/Flash' + flashState + '1.png';
             ghostImg2.src = './assets/sprites/Flash' + flashState + '2.png';
         } else if (ghostData.isDead){
