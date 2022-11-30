@@ -103,7 +103,6 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
                     }
 
                     // Update ghost state.
-                    System.out.println(newLoc);
                     context.setLoc(newLoc);
                 }
             }

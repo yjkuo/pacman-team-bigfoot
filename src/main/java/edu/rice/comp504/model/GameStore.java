@@ -132,6 +132,7 @@ public class GameStore {
             String ghostColor = ghostIndexColorMap.get(i);
             Point ghostStartLoc = ghostColorStartLocMap.get(ghostColor);
             Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, leaveTheBaseStrategy, 1, 20, false, false, 0);
+
             this.ghosts.add(ghost);
         }
     }
