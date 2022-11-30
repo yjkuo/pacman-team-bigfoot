@@ -124,11 +124,11 @@ public class ACharacter extends AObject implements PropertyChangeListener {
      */
     public boolean detectCollisionWithWalls(int direction, int[][] layout) {
         Point locAfterMoveInDirection = locationAfterMoveInDirection(direction);
-        int pacmanHalfSize = (this.size / 2) - 1;
+        int pacmanHalfSize = (this.size / 2);
         Point topLeft = new Point(locAfterMoveInDirection.x - pacmanHalfSize, locAfterMoveInDirection.y - pacmanHalfSize);
-        Point topRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize, locAfterMoveInDirection.y - pacmanHalfSize);
-        Point bottomLeft = new Point(locAfterMoveInDirection.x - pacmanHalfSize, locAfterMoveInDirection.y + pacmanHalfSize);
-        Point bottomRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize, locAfterMoveInDirection.y + pacmanHalfSize);
+        Point topRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize - 1, locAfterMoveInDirection.y - pacmanHalfSize);
+        Point bottomLeft = new Point(locAfterMoveInDirection.x - pacmanHalfSize, locAfterMoveInDirection.y + pacmanHalfSize - 1);
+        Point bottomRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize - 1, locAfterMoveInDirection.y + pacmanHalfSize - 1);
 
         Point[] points = {topLeft, topRight, bottomLeft, bottomRight};
         for (int i = 0; i < points.length; i++) {

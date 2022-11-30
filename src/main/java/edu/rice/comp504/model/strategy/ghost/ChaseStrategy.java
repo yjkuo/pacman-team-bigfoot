@@ -31,11 +31,31 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
 
     @Override
     public void updateState(ACharacter pacman, ACharacter context) {
-        System.out.println("Strategy called");
         if (context != null) {
             if (pacman.getName().equals("pacman")) {
                 Pacman pacmanTemp = (Pacman) pacman;
                 if (context.getName().equals("ghost")) {
+//                    Point ghostLoc = context.getLoc();
+//                    Point pacmanLoc = pacman.getLoc();
+//
+//                    Point ghostCoords = new Point(ghostLoc.x / 20, ghostLoc.y / 20);
+//                    Point pacmanCoords = new Point(pacmanLoc.x / 20, pacmanLoc.y / 20);
+//
+//                    DFS dfs = new DFS(pacmanCoords, layout);
+//                    dfs.dfs(ghostCoords);
+//                    context.setDirection(dfs.bestDirection);
+//                    if (!context.detectCollisionWithWalls(dfs.bestDirection, layout)) {
+//                        Point locAfterMoveInDirection = context.locationAfterMoveInDirection(dfs.bestDirection);
+//
+//                        context.setLoc(locAfterMoveInDirection);
+//                    }
+//                    return;
+
+
+
+
+
+
                     Point currentLoc = context.getLoc();
                     Point newLoc = currentLoc;
                     Point distance = new Point(pacman.getLoc().x - currentLoc.x, pacman.getLoc().y - currentLoc.y);

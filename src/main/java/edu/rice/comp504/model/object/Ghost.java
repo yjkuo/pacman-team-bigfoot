@@ -82,6 +82,45 @@ public class Ghost extends ACharacter{
 
 
     public boolean canGoInDirection(int direction, int[][] layout) {
+        Point locAfterMoveInDirection = this.getLoc();
+        switch(direction) {
+            case 0: {
+                locAfterMoveInDirection.x -= 1;
+                break;
+            }
+            case 1: {
+                locAfterMoveInDirection.y -= 1;
+                break;
+            }
+            case 2: {
+                locAfterMoveInDirection.x += 1;
+                break;
+            }
+            case 3: {
+                locAfterMoveInDirection.y += 1;
+                break;
+            }
+            default:
+        }
+
+        int ghostHalfSize = (this.size / 2);
+        Point topLeft = new Point(locAfterMoveInDirection.x - ghostHalfSize, locAfterMoveInDirection.y - ghostHalfSize);
+        Point topRight = new Point(locAfterMoveInDirection.x + ghostHalfSize - 1, locAfterMoveInDirection.y - ghostHalfSize);
+        Point bottomLeft = new Point(locAfterMoveInDirection.x - ghostHalfSize, locAfterMoveInDirection.y + ghostHalfSize - 1);
+        Point bottomRight = new Point(locAfterMoveInDirection.x + ghostHalfSize - 1, locAfterMoveInDirection.y + ghostHalfSize - 1);
+
+        Point[] points = {topLeft, topRight, bottomLeft, bottomRight};
+        for (int i = 0; i < points.length; i++) {
+            int xCoord = points[i].x / 20;
+            int yCoord = points[i].y / 20;
+//            In case of teleportation
+            xCoord = Math.max(xCoord, 0);
+            xCoord = Math.min(xCoord, layout.length - 1);
+
+            if (layout[yCoord][xCoord] == 1 || layout[yCoord][xCoord] == 2) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -95,17 +134,21 @@ public class Ghost extends ACharacter{
 
     public void setStrategyToDefault(int[][] layout) {
         switch (this.getColor()) {
-            case "orange" : {
+            case ("orange") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
+                break;
             }
-            case "pink" : {
+            case ("pink") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
+                break;
             }
-            case "blue" : {
+            case ("blue") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
+                break;
             }
-            case "red" : {
+            case ("red") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
+                break;
             }
             default:
         }

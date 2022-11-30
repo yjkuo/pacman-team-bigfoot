@@ -20,7 +20,7 @@ public class AObject {
      */
     public AObject(String name, Point loc, String color, int size) {
         this.name = name;
-        this.loc = new Point((int)loc.getX(), (int)loc.getY());
+        this.loc = new Point(loc.x, loc.y);
         this.color = color;
         this.size = size;
     }
@@ -62,7 +62,7 @@ public class AObject {
      * @return The object location.
      */
     public Point getLoc() {
-        return loc;
+        return new Point(loc.x, loc.y);
     }
 
     /**
@@ -76,7 +76,7 @@ public class AObject {
         else if (loc.x - this.getSize()/2 <= 0) {
             loc.x =(20 * 28) - (this.getSize()/2);
         }
-        this.loc = new Point((int)loc.getX(), (int)loc.getY());;
+        this.loc = new Point(loc.x, loc.y);;
     }
 
     /**
