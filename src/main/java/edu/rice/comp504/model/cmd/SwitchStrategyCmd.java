@@ -9,11 +9,12 @@ import edu.rice.comp504.model.strategy.StrategyFactory;
 public class SwitchStrategyCmd implements ICharacterCmd{
     private IUpdateStrategy strategyTo;
 
+
     /**
      * Constructor of the switch command.
      */
-    public SwitchStrategyCmd(String strategyTo) {
-        this.strategyTo = StrategyFactory.makeStrategyFactory().makeStrategy(strategyTo);
+    public SwitchStrategyCmd(String strategyTo, int[][] layout) {
+        this.strategyTo = StrategyFactory.makeStrategyFactory().makeStrategy(strategyTo, layout);
     }
 
 

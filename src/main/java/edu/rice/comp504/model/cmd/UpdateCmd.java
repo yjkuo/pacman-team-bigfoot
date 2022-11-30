@@ -32,14 +32,11 @@ public class UpdateCmd implements ICharacterCmd{
             if (pacman.getName().equals("pacman")) {
                 Pacman pacmanTemp = (Pacman) pacman;
                 if (context.getName().equals("pacman")) {
-                    ACharacter character = ((ACharacter) context);
-                    character.getUpdateStrategy().updateState(pacmanTemp, character);
+                     context.getUpdateStrategy().updateState(pacmanTemp, context);
                 } else if (context.getName().equals("ghost")) {
-                    ACharacter character = ((ACharacter) context);
-                    ACharacter pac = ((ACharacter) pacman);
-                    Pacman pacmanObj = (Pacman) pac;
+                    Pacman pacmanObj = (Pacman) pacman;
                     if (pacmanObj.getDeadState() == -1) {
-                        character.getUpdateStrategy().updateState(pacmanTemp, character);
+                        context.getUpdateStrategy().updateState(pacmanTemp, context);
                     } else if (pacmanObj.getDeadState() == 12) {
                         Ghost ghost = (Ghost) context;
                         ghost.setStartLoc();

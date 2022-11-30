@@ -88,12 +88,9 @@ public class Ghost extends ACharacter{
     }
 
     /**
-     * Update state of the Ghost when the property change event occurs by executing the command.
+     * Execute the command
      */
-    @Override
-    public void propertyChange(PropertyChangeEvent e) {
-        ICharacterCmd update = (ICharacterCmd) e.getNewValue();
-        ACharacter pacman = (ACharacter) e.getOldValue();
-        update.execute(pacman, this);
+    public void executeCommand(ICharacterCmd command, ACharacter pacman) {
+        command.execute(pacman, this);
     }
 }
