@@ -2,6 +2,10 @@ package edu.rice.comp504.model.strategy;
 
 import edu.rice.comp504.model.cmd.CmdFactory;
 import edu.rice.comp504.model.cmd.ICharacterCmd;
+import edu.rice.comp504.model.strategy.ghost.ChaseStrategy;
+import edu.rice.comp504.model.strategy.ghost.GoBackToBaseStrategy;
+import edu.rice.comp504.model.strategy.ghost.RetreatStrategy;
+import edu.rice.comp504.model.strategy.ghost.WalkStrategy;
 
 /**
  * Factory that will make strategies based on the input.
@@ -28,8 +32,24 @@ public class StrategyFactory {
      * @param type The type of the strategy.
      * @return The corresponding strategy.
      */
-    public IUpdateStrategy makeStrategy(String type) {
-        //TODO
-        return null;
+    public IUpdateStrategy makeStrategy(String type, int[][] layout) {
+        IUpdateStrategy strategy = null;
+        switch (type){
+            case "walk":
+                strategy = WalkStrategy.makeStrategy();
+                break;
+            case "chase":
+                strategy = ChaseStrategy.makeStrategy(layout);
+                break;
+            case "retreat":
+                strategy = RetreatStrategy.makeStrategy();
+                break;
+            case "goBackToBase":
+                strategy = GoBackToBaseStrategy.makeStrategy();
+                break;
+            default:
+                break;
+        }
+        return strategy;
     }
 }

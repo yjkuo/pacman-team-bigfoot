@@ -7,6 +7,8 @@ import edu.rice.comp504.model.object.*;
 import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
 import edu.rice.comp504.model.strategy.PacmanStrategy;
+import edu.rice.comp504.model.strategy.StrategyFactory;
+import edu.rice.comp504.model.strategy.ghost.IUpdateGhostStrategy;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
@@ -35,6 +37,10 @@ public class GameStore {
     private int passageWidth = 20;
     private IUpdateStrategy pacmanStrategy;
     Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
+    Point yellow_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
+    Point pink_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
+    Point blue_ghostStartLoc = new Point (15 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
+    Point red_ghostStartLoc = new Point (16 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
 
     /**
      * Constructor.
@@ -94,6 +100,17 @@ public class GameStore {
         resetPacman();
         resetItems();
         resetGhosts();
+
+        IUpdateStrategy walkStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout);
+        IUpdateStrategy chaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout);
+        Ghost orange_ghost = new Ghost("ghost", yellow_ghostStartLoc, 5, "orange", chaseStrategy, 2, 20, false, false, 0);
+        Ghost pink_ghost = new Ghost("ghost", pink_ghostStartLoc, 5, "pink", chaseStrategy, 2, 20, false, false, 0);
+        Ghost blue_ghost = new Ghost("ghost", blue_ghostStartLoc, 5, "blue", chaseStrategy, 2, 20, false, false, 0);
+        Ghost red_ghost = new Ghost("ghost", red_ghostStartLoc, 5, "red", chaseStrategy, 2, 20, false, false, 0);
+        this.ghosts.add(orange_ghost);
+        this.ghosts.add(pink_ghost);
+        this.ghosts.add(blue_ghost);
+        this.ghosts.add(red_ghost);
 
     }
 
@@ -253,6 +270,9 @@ public class GameStore {
     public void update(int direction) {
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
+        for (Ghost ghost : ghosts) {
+            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
+        }
 
         for (Ghost ghost : ghosts) {
             if (pacman.detectCollisionObj(ghost)) {
@@ -269,5 +289,55 @@ public class GameStore {
         if (eaten != null) {
             removeDot(eaten, true);
         }
+    }
+
+    /**
+     * Extra action for characters.
+     */
+    private void ghostsAction() {
+        for (Ghost ghost : this.getGhosts()) {
+            ICharacterCmd switchCmd = null;
+            if (ghost.isFlashing() && ghost.getFlashingTimer() <= 0) {
+                ghost.setFlashing(false);
+                switchCmd = resetGhostStrategy(ghost, switchCmd);
+                this.setGhostScore(200);
+            } else if ((ghost.getLoc().equals(ghost.getOriginalLoc()) && ghost.isDead())) {
+                switchCmd = resetGhostStrategy(ghost, switchCmd);
+                ghost.setDead(false);
+            } else if (ghost.isDead()) {
+                if (!ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
+                    switchCmd = new SwitchStrategyCmd("goBackToBase", layout);
+                    setCurrentScore(getCurrentScore() + getGhostScore());
+                    setGhostScore(getGhostScore() * 2);
+                }
+            } else if (ghost.isFlashing()) {
+                switchCmd = new SwitchStrategyCmd("retreat", layout);
+            }
+            if (switchCmd != null) {
+                switchCmd.execute(ghost);
+            }
+        }
+    }
+
+    /**
+     * Reset the ghost strategy based on ghost's color.
+     * @param ghost The ghost object.
+     * @param switchCmd Switch Command.
+     * @return The Switch Command.
+     */
+    private ICharacterCmd resetGhostStrategy(Ghost ghost, ICharacterCmd switchCmd) {
+        switch (ghost.getColor()) {
+            case "red":
+            case "blue":
+                switchCmd = new SwitchStrategyCmd("chase", layout);
+                break;
+            case "orange":
+            case "pink":
+                switchCmd = new SwitchStrategyCmd("walk", layout);
+                break;
+            default:
+                break;
+        }
+        return switchCmd;
     }
 }
