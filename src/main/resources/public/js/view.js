@@ -20,6 +20,7 @@ let pacman = {
     dir: 2,
     state: false
 };
+let ghostFlashing = 0;
 
 let grassImg = new Image();
 grassImg.src = './assets/grass.png';
@@ -35,11 +36,17 @@ let pacmanImg2 = new Image();
 pacmanImg2.src = './assets/sprites/PacmanL2.png';
 
 let ghosts = ['OL', 'PL', 'BL', 'RL'];
+let dirToCharacter = {
+    0: 'L',
+    1: 'U',
+    2: 'R',
+    3: 'D'
+}
 let ghostColorCode = {
-    'orange': 'OL',
-    'pink' : 'PL',
-    'blue' : 'BL',
-    'red' : 'RL'
+    'orange': 'O',
+    'pink' : 'P',
+    'blue' : 'B',
+    'red' : 'R'
 }
 let ghostsData = [];
 let fruitImg = new Image();
@@ -113,7 +120,7 @@ function createApp(canvas) {
             else if (item.name === "bigDot") app.drawDot(item.loc.x, item.loc.y, 6, "white");
         })
         pacman.state = !pacman.state;
-
+        ghostFlashing = (ghostFlashing+1) % 4;
         app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
         for (let i = 0; i < ghostsData.length; ++i) {
             app.drawGhost(ghostsData[i], pacman.state);
@@ -165,9 +172,18 @@ function createApp(canvas) {
 
     let drawGhost = function(ghostData, animate) {
         let ghostImg1 = new Image();
-        ghostImg1.src = './assets/sprites/' + ghostColorCode[ghostData.color] + '1.png';
         let ghostImg2 = new Image();
-        ghostImg2.src = './assets/sprites/' + ghostColorCode[ghostData.color] + '2.png';
+        if (ghostData.isFlashing) {
+            let flashState = ghostFlashing > 1? 'A': 'B';
+            ghostImg1.src = './assets/sprites/Flash' + flashState + '1.png';
+            ghostImg2.src = './assets/sprites/Flash' + flashState + '2.png';
+        } else if (ghostData.isDead){
+            ghostImg1.src = './assets/sprites/DeadGhost' + dirToCharacter[ghostData.direction] + '.png';
+            ghostImg2.src = './assets/sprites/DeadGhost' + dirToCharacter[ghostData.direction] + '.png';
+        } else {
+            ghostImg1.src = './assets/sprites/' + ghostColorCode[ghostData.color] + dirToCharacter[ghostData.direction] + '1.png';
+            ghostImg2.src = './assets/sprites/' + ghostColorCode[ghostData.color] + dirToCharacter[ghostData.direction] + '2.png';
+        }
         let x = gameStartX + ghostData.loc.x;
         let y = gameStartY + ghostData.loc.y;
         let img = animate? ghostImg1: ghostImg2;
