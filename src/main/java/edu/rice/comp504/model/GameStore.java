@@ -74,7 +74,7 @@ public class GameStore {
 
         ghosts = new ArrayList<>();
         items = new ArrayList<>();
-        pacmanStrategy = new PacmanStrategy(layout, ghosts, items);
+        pacmanStrategy = new PacmanStrategy(layout);
         this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
                 2, passageWidth);
     }
@@ -88,12 +88,25 @@ public class GameStore {
         this.lives = lives;
         currentScore = 0;
         eatenDots = 0;
-        ghostScore = 200;
         portals = new int[2];
         numberOfFruits = 0;
 
-//        pacman.setLoc(pacmanStartLoc);
-//        pacman.setDirection(2);
+        resetPacman();
+        resetItems();
+        resetGhosts();
+
+    }
+
+    private void resetPacman() {
+        pacman.setLoc(pacmanStartLoc);
+        pacman.setDirection(2);
+    }
+
+    private void resetGhosts() {
+
+    }
+
+    private void resetItems() {
         items.clear();
         for (int i = 0; i < this.layout.length; i++) {
             for (int j = 0; j < this.layout[0].length; j++) {
@@ -109,10 +122,6 @@ public class GameStore {
                 }
             }
         }
-        //TODO Add more intialization
-        pacmanStrategy = new PacmanStrategy(this.layout, this.ghosts, this.items);
-        this.pacman = new Pacman("pacman", pacmanStartLoc, 5, "pacman", pacmanStrategy,
-                2, passageWidth);
     }
 
     /**
@@ -245,7 +254,20 @@ public class GameStore {
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
 
-
-
+        for (Ghost ghost : ghosts) {
+            if (pacman.detectCollisionObj(ghost)) {
+                pacman.reduceLive();
+            }
+        }
+        AItem eaten = null;
+        for (AItem item : items) {
+            if (pacman.detectCollisionObj(item)) {
+                eaten = item;
+                break;
+            }
+        }
+        if (eaten != null) {
+            removeDot(eaten, true);
+        }
     }
 }

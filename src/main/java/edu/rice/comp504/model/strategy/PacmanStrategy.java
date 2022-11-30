@@ -14,13 +14,8 @@ import java.util.List;
 
 public class PacmanStrategy implements IUpdateStrategy {
     private int[][] layout;
-    private List<Ghost> ghosts;
-
-    private List<AItem> items;
-    public PacmanStrategy(int[][] layout, List<Ghost> ghosts, List<AItem> items) {
+    public PacmanStrategy(int[][] layout) {
         this.layout = layout;
-        this.ghosts = ghosts;
-        this.items = items;
     }
 
     /**
@@ -42,21 +37,7 @@ public class PacmanStrategy implements IUpdateStrategy {
         if (!pacman.detectCollisionWithWalls(direction, layout)) {
             Point locAfterMoveInDirection = pacman.locationAfterMoveInDirection(direction);
 
-            for (Ghost ghost : ghosts) {
-                if (pacman.detectCollisionObj(ghost)) {
-                    pacman.reduceLive();
-                }
-            }
-            AItem eaten = null;
-            for (AItem item : items) {
-                if (pacman.detectCollisionObj(item)) {
-                    eaten = item;
-                    break;
-                }
-            }
-            if (eaten != null) {
-                store.removeDot(eaten, true);
-            }
+//            For Teleportation
             if (locAfterMoveInDirection.x + pacman.getSize()/2 >= pacman.getSize() * layout.length) {
                 locAfterMoveInDirection.x = pacman.getSize()/2;
             }

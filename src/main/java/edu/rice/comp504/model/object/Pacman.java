@@ -81,13 +81,7 @@ public class Pacman extends ACharacter{
         int ghostSize = obj.getSize();
         Point loc = this.getLoc();
         int size = this.getSize();
-        if (loc.x + size > ghostLoc.x &&
-            loc.x < ghostLoc.x + ghostSize &&
-            loc.y + size > ghostLoc.y &&
-            loc.y < ghostLoc.y + ghostSize ) {
-            return true;
-        }
-        return false;
+        return Math.sqrt(Math.pow(loc.x - ghostLoc.x, 2) + Math.pow(loc.y - ghostLoc.y, 2)) <= size / 2 + ghostSize / 2;
     }
 
     public void executeCommand(ICharacterCmd command) {

@@ -202,6 +202,15 @@ function createApp(canvas) {
         c.fillRect(xVal, yVal, passageWidth, passageWidth);
     }
 
+    let writeMessage = function (message) {
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        c.font = "50px Ariel";
+        c.fillStyle = "white";
+        c.textAlign = "center";
+        c.fillText(message, canvas.width / 2, canvas.height / 2);
+    }
+
     let gamePause = function() {
         if (gameStart) {
             gameStart = false;
@@ -210,12 +219,13 @@ function createApp(canvas) {
             intervalID = -1;
             c.fillStyle = "rgba(0, 0, 0, 0.5)";
             c.fillRect(0, 0, canvas.width, canvas.height);
-            c.font = "50px Ariel";
-            c.fillStyle = "white";
-            c.textAlign = "center";
-            c.fillText("Paused", canvas.width / 2, canvas.height / 2);
+            writeMessage("Paused");
+            // c.font = "50px Ariel";
+            // c.fillStyle = "white";
+            // c.textAlign = "center";
+            // c.fillText("Paused", canvas.width / 2, canvas.height / 2);
         } else {
-            intervalID = setInterval(updateCanvas, 200);
+            intervalID = setInterval(updateCanvas, 100);
             gameStart = true;
             $("#pause-btn-img").attr('src', './assets/pauseBtn.png');
         }
@@ -223,6 +233,7 @@ function createApp(canvas) {
 
     return {
         clear,
+        writeMessage,
         drawBackground,
         drawGameBoard,
         drawPassageBlock,
@@ -317,5 +328,6 @@ function initialize() {
         data = JSON.parse(data);
         console.log(data);
         handleGameData(data);
+        app.writeMessage("Press any key to start");
     });
 }
