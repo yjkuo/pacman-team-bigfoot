@@ -118,6 +118,7 @@ function createApp(canvas) {
         items.forEach(item => {
             if (item.name === "smallDot") app.drawDot(item.loc.x, item.loc.y, 3, "white");
             else if (item.name === "bigDot") app.drawDot(item.loc.x, item.loc.y, 6, "white");
+            else if (item.name === "fruit") app.drawFruit(item.loc.x, item.loc.y);
         })
         pacman.state = !pacman.state;
         ghostFlashing = (ghostFlashing+1) % 4;
@@ -144,16 +145,6 @@ function createApp(canvas) {
         c.arc(x, y, radius, 0, 2 * Math.PI, false);
         c.closePath();
         c.fill();
-    };
-
-    let drawSprite = function(image, row, column, rotate=0.) {
-        let x = gameStartX + passageWidth * column;
-        let y = gameStartY + passageWidth * row;
-        c.save();
-        c.translate(x,y);
-        c.rotate(rotate);
-        c.drawImage(image, 0, 0, passageWidth - 5, passageWidth - 5);
-        c.restore();
     };
 
     let drawPacman = function(row, column, animate, direction) {
@@ -197,8 +188,8 @@ function createApp(canvas) {
     };
 
     let drawFruit = function(row, column) {
-        let x = gameStartX + passageWidth * column;
-        let y = gameStartY + passageWidth * row;
+        let x = gameStartX + row;
+        let y = gameStartY + column;
         c.drawImage(fruitImg, x, y, passageWidth - 5, passageWidth - 5);
     };
 
