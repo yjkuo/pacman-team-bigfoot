@@ -13,7 +13,9 @@ import edu.rice.comp504.model.strategy.ghost.IUpdateGhostStrategy;
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameStore {
     private Pacman pacman;
@@ -41,6 +43,21 @@ public class GameStore {
     Point pink_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
     Point blue_ghostStartLoc = new Point (15 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
     Point red_ghostStartLoc = new Point (16 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
+
+
+    Map<Integer, String> ghostIndexColorMap  = new HashMap<Integer, String>() {{
+        put(0, "orange");
+        put(1, "pink");
+        put(2, "blue");
+        put(3, "red");
+    }};
+
+    Map<String, Point> ghostColorStartLocMap  = new HashMap<String, Point>() {{
+        put("orange", yellow_ghostStartLoc);
+        put("pink", pink_ghostStartLoc);
+        put("blue", blue_ghostStartLoc);
+        put("red", red_ghostStartLoc);
+    }};
 
     /**
      * Constructor.
@@ -100,18 +117,6 @@ public class GameStore {
         resetPacman();
         resetItems();
         resetGhosts();
-
-        IUpdateStrategy walkStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout);
-        IUpdateStrategy chaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout);
-        Ghost orange_ghost = new Ghost("ghost", yellow_ghostStartLoc, 5, "orange", chaseStrategy, 2, 20, false, false, 0);
-        Ghost pink_ghost = new Ghost("ghost", pink_ghostStartLoc, 5, "pink", chaseStrategy, 2, 20, false, false, 0);
-        Ghost blue_ghost = new Ghost("ghost", blue_ghostStartLoc, 5, "blue", chaseStrategy, 2, 20, false, false, 0);
-        Ghost red_ghost = new Ghost("ghost", red_ghostStartLoc, 5, "red", chaseStrategy, 2, 20, false, false, 0);
-        this.ghosts.add(orange_ghost);
-        this.ghosts.add(pink_ghost);
-        this.ghosts.add(blue_ghost);
-        this.ghosts.add(red_ghost);
-
     }
 
     private void resetPacman() {
@@ -120,7 +125,16 @@ public class GameStore {
     }
 
     private void resetGhosts() {
+        this.ghosts.clear();
+        IUpdateStrategy walkStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout);
+        IUpdateStrategy chaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout);
 
+        for (int i = 0; i < this.numberOfGhosts; i++) {
+            String ghostColor = ghostIndexColorMap.get(i);
+            Point ghostStartLoc = ghostColorStartLocMap.get(ghostColor);
+            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, chaseStrategy, 2, 20, false, false, 0);
+            this.ghosts.add(ghost);
+        }
     }
 
     private void resetItems() {
