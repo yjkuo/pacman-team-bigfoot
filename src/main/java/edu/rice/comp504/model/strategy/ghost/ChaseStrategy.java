@@ -31,6 +31,7 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
 
     @Override
     public void updateState(ACharacter pacman, ACharacter context) {
+        System.out.println("Strategy called");
         if (context != null) {
             if (pacman.getName().equals("pacman")) {
                 Pacman pacmanTemp = (Pacman) pacman;
@@ -40,7 +41,7 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
                     Point distance = new Point(pacman.getLoc().x - currentLoc.x, pacman.getLoc().y - currentLoc.y);
 
                     ArrayList<Integer> directions = new ArrayList<>();
-                    int currentDir = context.getDirection();
+                    int currentDir = context.getDirection() + 1;
                     int newDirection = 0;
                     int backupDirection = 0;
                     Point xDir = distToDirection(distance.x, true);
@@ -60,8 +61,9 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
                     }
 
                     boolean foundFirstDir = false;
-                    for (Integer dir : directions) {
-                        if (!context.detectCollisionWithWalls(dir, layout)) {
+                    for (int i = 0; i < directions.size(); i++) {
+                        int dir = directions.get(i);
+                        if (!context.detectCollisionWithWalls(dir - 1, layout)) {
                             if (foundFirstDir) {
                                 backupDirection = dir;
                                 break;
@@ -82,7 +84,7 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
                     if ((newDirection + 1) % 4 + 1 == currentDir && backupDirection != 0) {
                         newDirection = backupDirection;
                     }
-                    context.setDirection(newDirection);
+                    context.setDirection(newDirection - 1);
                     switch (newDirection) {
                         case 1:
                             newLoc = new Point(currentLoc.x - context.getVel(), currentLoc.y);
@@ -101,6 +103,7 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
                     }
 
                     // Update ghost state.
+                    System.out.println(newLoc);
                     context.setLoc(newLoc);
                 }
             }

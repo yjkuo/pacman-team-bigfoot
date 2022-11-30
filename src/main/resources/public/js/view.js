@@ -302,6 +302,7 @@ function handleGameData(data) {
     pacman.position.x = data.pacman.loc.x;
     pacman.position.y = data.pacman.loc.y;
     pacman.dir = data.pacman.direction;
+    console.log(data.ghosts);
     items = data.items;
     gameState.score = data.currentScore;
     app.clear()

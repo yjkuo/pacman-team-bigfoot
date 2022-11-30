@@ -121,11 +121,11 @@ public class GameStore {
                 2, passageWidth);
         IUpdateStrategy walkStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout);
         IUpdateStrategy chaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout);
-        Ghost yellow_ghost = new Ghost("ghost", yellow_ghostStartLoc, 5, "yellow", chaseStrategy, 2, 20, false, false, 0);
+        Ghost orange_ghost = new Ghost("ghost", yellow_ghostStartLoc, 5, "orange", chaseStrategy, 2, 20, false, false, 0);
         Ghost pink_ghost = new Ghost("ghost", pink_ghostStartLoc, 5, "pink", chaseStrategy, 2, 20, false, false, 0);
         Ghost blue_ghost = new Ghost("ghost", blue_ghostStartLoc, 5, "blue", chaseStrategy, 2, 20, false, false, 0);
         Ghost red_ghost = new Ghost("ghost", red_ghostStartLoc, 5, "red", chaseStrategy, 2, 20, false, false, 0);
-        this.ghosts.add(yellow_ghost);
+        this.ghosts.add(orange_ghost);
         this.ghosts.add(pink_ghost);
         this.ghosts.add(blue_ghost);
         this.ghosts.add(red_ghost);
@@ -261,7 +261,7 @@ public class GameStore {
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
         for (Ghost ghost: ghosts) {
-            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("update"), pacman);
+            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
         }
     }
 
@@ -305,7 +305,7 @@ public class GameStore {
             case "blue":
                 switchCmd = new SwitchStrategyCmd("chase", layout);
                 break;
-            case "yellow":
+            case "orange":
             case "pink":
                 switchCmd = new SwitchStrategyCmd("walk", layout);
                 break;

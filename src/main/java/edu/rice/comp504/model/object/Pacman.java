@@ -92,5 +92,23 @@ public class Pacman extends ACharacter{
 
     public void executeCommand(ICharacterCmd command) {
         command.execute(this);
+        if (deadState != -1) {
+            deadSpeed++;
+            if (deadSpeed > 4) {
+                deadState++;
+                deadSpeed = 0;
+            }
+            if (deadState > 12) {
+                reset();
+                deadState = -1;
+            }
+        }
+    }
+
+    /**
+     * Reset the pacman.
+     */
+    public void reset() {
+        this.setLoc(new Point(this.getOriginalLoc().x, this.getOriginalLoc().y));
     }
 }
