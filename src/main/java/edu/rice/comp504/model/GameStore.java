@@ -12,10 +12,8 @@ import edu.rice.comp504.model.strategy.ghost.IUpdateGhostStrategy;
 
 import java.awt.*;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class GameStore {
     private Pacman pacman;
@@ -117,6 +115,18 @@ public class GameStore {
         resetPacman();
         resetItems();
         resetGhosts();
+    }
+    private void genFruits() {
+        Random rand = new Random();
+        int i = rand.nextInt(layout.length);
+        int j = rand.nextInt(layout[0].length);
+        while (layout[i][j] != 0) {
+            i = rand.nextInt(layout.length);
+            j = rand.nextInt(layout[0].length);
+        }
+        Point fruitLoc = new Point(j * passageWidth, i * passageWidth);
+        AItem fruit = new AItem("fruit", fruitLoc, "", 100, passageWidth);
+        items.add(fruit);
     }
 
     private void resetPacman() {
@@ -303,6 +313,9 @@ public class GameStore {
         if (eaten != null) {
             removeDot(eaten, true);
         }
+        timeElapsed++;
+        if (timeElapsed % 150 == 0) genFruits();
+
     }
 
     /**
