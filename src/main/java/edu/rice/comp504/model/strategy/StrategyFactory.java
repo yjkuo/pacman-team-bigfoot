@@ -33,7 +33,7 @@ public class StrategyFactory {
         IUpdateStrategy strategy = null;
         switch (type){
             case "walk":
-                strategy = WalkStrategy.makeStrategy();
+                strategy = WalkStrategy.makeStrategy(layout);
                 break;
             case "chase":
                 strategy = ChaseStrategy.makeStrategy(layout);
