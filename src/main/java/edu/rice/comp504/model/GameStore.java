@@ -131,7 +131,7 @@ public class GameStore {
         for (int i = 0; i < this.numberOfGhosts; i++) {
             String ghostColor = ghostIndexColorMap.get(i);
             Point ghostStartLoc = ghostColorStartLocMap.get(ghostColor);
-            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, leaveTheBaseStrategy, 2, 20, false, false, 0);
+            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, leaveTheBaseStrategy, 1, 20, false, false, 0);
             this.ghosts.add(ghost);
         }
     }
@@ -283,9 +283,9 @@ public class GameStore {
     public void update(int direction) {
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
-//        for (Ghost ghost : ghosts) {
-//            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
-//        }
+        for (Ghost ghost : ghosts) {
+            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
+        }
 
         for (Ghost ghost : ghosts) {
             if (pacman.detectCollisionObj(ghost)) {

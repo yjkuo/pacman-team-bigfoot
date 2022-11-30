@@ -2,6 +2,7 @@ package edu.rice.comp504.model.object;
 
 import edu.rice.comp504.model.cmd.ICharacterCmd;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
+import edu.rice.comp504.model.strategy.StrategyFactory;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -87,7 +88,23 @@ public class Ghost extends ACharacter{
         this.flashingTimer = flashingTimer;
     }
 
-
+    public void setStrategyToDefault(int[][] layout) {
+        switch (this.getColor()) {
+            case "orange" : {
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
+            }
+            case "pink" : {
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
+            }
+            case "blue" : {
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
+            }
+            case "red" : {
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
+            }
+            default:
+        }
+    }
     /**
      * Execute the command
      */
