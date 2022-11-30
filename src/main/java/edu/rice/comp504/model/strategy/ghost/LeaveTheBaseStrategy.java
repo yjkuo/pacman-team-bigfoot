@@ -15,24 +15,11 @@ public class LeaveTheBaseStrategy implements IUpdateGhostStrategy{
         this.layout = layout;
     }
 
-    private boolean detectCollisionWithWallsExceptBase(ACharacter ghost) {
-        Point locAfterMoveInDirection = new Point((int) ghost.getLoc().getX(), (int) ghost.getLoc().getY());
-        locAfterMoveInDirection.y--;
-        int ghostHalfSize = (ghost.getSize() / 2) - 1;
-        Point topLeft = new Point(locAfterMoveInDirection.x - ghostHalfSize, locAfterMoveInDirection.y - ghostHalfSize);
-        Point topRight = new Point(locAfterMoveInDirection.x + ghostHalfSize, locAfterMoveInDirection.y - ghostHalfSize);
-        Point bottomLeft = new Point(locAfterMoveInDirection.x - ghostHalfSize, locAfterMoveInDirection.y + ghostHalfSize);
-        Point bottomRight = new Point(locAfterMoveInDirection.x + ghostHalfSize, locAfterMoveInDirection.y + ghostHalfSize);
-
-        Point[] points = {topLeft, topRight, bottomLeft, bottomRight};
-        for (int i = 0; i < points.length; i++) {
-            int xCoord = points[i].x / 20;
-            int yCoord = points[i].y / 20;
-//            In case of teleportation
-            xCoord = Math.max(xCoord, 0);
-            xCoord = Math.min(xCoord, layout.length - 1);
-
-            if (layout[yCoord][xCoord] == 1) {
+    private boolean detectCollisionWithWallAfterLeavingBase(ACharacter ghost) {
+        Point loc = ghost.getLoc();
+        int ghostHalfSize = ghost.getSize() / 2;
+        if ((loc.y - ghostHalfSize) % 20 == 0 ) {
+            if (layout[(loc.y - ghostHalfSize) / 20 - 1][loc.x / 20] == 1) {
                 return true;
             }
         }
@@ -57,12 +44,13 @@ public class LeaveTheBaseStrategy implements IUpdateGhostStrategy{
             if (ghost.getName().equals("ghost")) {
                 int vel = ghost.getVel();
                 for (int i = 0; i < vel; i++) {
-                    if (!detectCollisionWithWallsExceptBase(ghost)) {
+                    if (!detectCollisionWithWallAfterLeavingBase(ghost)) {
                         Point loc = ghost.getLoc();
                         loc.y--;
                         ghost.setLoc(loc);
                     }
                     else {
+//                        System.out.println(ghost.getLoc());
                         Ghost gh = (Ghost) ghost;
                         gh.setStrategyToDefault(layout);
                         break;
