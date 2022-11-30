@@ -284,9 +284,9 @@ public class GameStore {
     public void update(int direction) {
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
-        for (Ghost ghost : ghosts) {
-            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
-        }
+//        for (Ghost ghost : ghosts) {
+//            ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
+//        }
 
         for (Ghost ghost : ghosts) {
             if (pacman.detectCollisionObj(ghost)) {

@@ -35,6 +35,13 @@ let pacmanImg2 = new Image();
 pacmanImg2.src = './assets/sprites/PacmanL2.png';
 
 let ghosts = ['OL', 'PL', 'BL', 'RL'];
+let ghostColorCode = {
+    'orange': 'OL',
+    'pink' : 'PL',
+    'blue' : 'BL',
+    'red' : 'RL'
+}
+let ghostsData = [];
 let fruitImg = new Image();
 fruitImg.src = './assets/sprites/Fruit1.png';
 
@@ -99,17 +106,6 @@ function createApp(canvas) {
                 if (layout[i][j] !== 1) {
                     app.drawPassageBlock(i, j);
                 }
-                // switch(layout[i][j]) {
-                //     case 0:
-                //     // case 4:
-                //         app.drawDot(i, j, 3, "white");
-                //         break;
-                //     case 3:
-                //         app.drawDot(i, j, 6, "white");
-                //         break;
-                //     default:
-                //         break;
-                // }
             }
         }
         items.forEach(item => {
@@ -117,14 +113,10 @@ function createApp(canvas) {
             else if (item.name === "bigDot") app.drawDot(item.loc.x, item.loc.y, 6, "white");
         })
         pacman.state = !pacman.state;
-        // if (!detectCollision()) {
-        //     pacman.position.x += pacman.velocity.x;
-        //     pacman.position.y += pacman.velocity.y;
-        //     layout[pacman.position.x][pacman.position.y] = 2;
-        // }
+
         app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
-        for (let i = 0; i < gameState.ghosts; ++i) {
-            app.drawGhost(13, 12 + i, pacman.state, i);
+        for (let i = 0; i < ghostsData.length; ++i) {
+            app.drawGhost(ghostsData[i].loc.x, ghostsData[i].loc.y, pacman.state, ghostsData[i].color);
         }
         // app.drawFruit(1, 12);
         // app.drawFruit(20, 4);
@@ -171,13 +163,13 @@ function createApp(canvas) {
         c.restore();
     };
 
-    let drawGhost = function(row, column, animate, type) {
+    let drawGhost = function(row, column, animate, color) {
         let ghostImg1 = new Image();
-        ghostImg1.src = './assets/sprites/' + ghosts[type] + '1.png';
+        ghostImg1.src = './assets/sprites/' + ghostColorCode[color] + '1.png';
         let ghostImg2 = new Image();
-        ghostImg2.src = './assets/sprites/' + ghosts[type] + '2.png';
-        let x = gameStartX + passageWidth * column;
-        let y = gameStartY + passageWidth * row;
+        ghostImg2.src = './assets/sprites/' + ghostColorCode[color] + '2.png';
+        let x = gameStartX + column;
+        let y = gameStartY + row;
         let img = animate? ghostImg1: ghostImg2;
         c.save();
         c.translate(x,y);
@@ -313,7 +305,7 @@ function handleGameData(data) {
     pacman.position.x = data.pacman.loc.x;
     pacman.position.y = data.pacman.loc.y;
     pacman.dir = data.pacman.direction;
-    console.log(data.ghosts);
+    ghostsData = data.ghosts;
     items = data.items;
     gameState.score = data.currentScore;
     app.clear()

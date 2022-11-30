@@ -25,7 +25,6 @@ public class PacmanStrategy implements IUpdateStrategy {
      * @param aCharacter
      */
     public void updateState(ACharacter character, ACharacter aCharacter) {
-        GameStore store = DispatchAdapter.getStore();
         Pacman pacman = (Pacman) character;
         int nextDirection = pacman.getNextDirection();
 
