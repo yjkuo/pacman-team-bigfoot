@@ -2,10 +2,7 @@ package edu.rice.comp504.model.strategy;
 
 import edu.rice.comp504.model.cmd.CmdFactory;
 import edu.rice.comp504.model.cmd.ICharacterCmd;
-import edu.rice.comp504.model.strategy.ghost.ChaseStrategy;
-import edu.rice.comp504.model.strategy.ghost.GoBackToBaseStrategy;
-import edu.rice.comp504.model.strategy.ghost.RetreatStrategy;
-import edu.rice.comp504.model.strategy.ghost.WalkStrategy;
+import edu.rice.comp504.model.strategy.ghost.*;
 
 /**
  * Factory that will make strategies based on the input.
@@ -47,6 +44,8 @@ public class StrategyFactory {
             case "goBackToBase":
                 strategy = GoBackToBaseStrategy.makeStrategy();
                 break;
+            case "leaveTheBase":
+                strategy = LeaveTheBaseStrategy.makeStrategy(layout);
             default:
                 break;
         }

@@ -39,10 +39,10 @@ public class GameStore {
     private int passageWidth = 20;
     private IUpdateStrategy pacmanStrategy;
     Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
-    Point yellow_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
-    Point pink_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
-    Point blue_ghostStartLoc = new Point (15 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
-    Point red_ghostStartLoc = new Point (16 * passageWidth + passageWidth/2, 14 * passageWidth + passageWidth / 2);
+    Point yellow_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 12 * passageWidth + passageWidth / 2);
+    Point pink_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 12 * passageWidth + passageWidth / 2);
+    Point blue_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 13 * passageWidth + passageWidth / 2);
+    Point red_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 13 * passageWidth + passageWidth / 2);
 
 
     Map<Integer, String> ghostIndexColorMap  = new HashMap<Integer, String>() {{
@@ -126,13 +126,12 @@ public class GameStore {
 
     private void resetGhosts() {
         this.ghosts.clear();
-        IUpdateStrategy walkStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout);
-        IUpdateStrategy chaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout);
+        IUpdateStrategy leaveTheBaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("leaveTheBase", layout);
 
         for (int i = 0; i < this.numberOfGhosts; i++) {
             String ghostColor = ghostIndexColorMap.get(i);
             Point ghostStartLoc = ghostColorStartLocMap.get(ghostColor);
-            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, chaseStrategy, 2, 20, false, false, 0);
+            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, leaveTheBaseStrategy, 2, 20, false, false, 0);
             this.ghosts.add(ghost);
         }
     }

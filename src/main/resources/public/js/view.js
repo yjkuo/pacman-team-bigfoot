@@ -116,7 +116,7 @@ function createApp(canvas) {
 
         app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
         for (let i = 0; i < ghostsData.length; ++i) {
-            app.drawGhost(ghostsData[i].loc.x, ghostsData[i].loc.y, pacman.state, ghostsData[i].color);
+            app.drawGhost(ghostsData[i], pacman.state);
         }
         // app.drawFruit(1, 12);
         // app.drawFruit(20, 4);
@@ -163,17 +163,18 @@ function createApp(canvas) {
         c.restore();
     };
 
-    let drawGhost = function(row, column, animate, color) {
+    let drawGhost = function(ghostData, animate) {
         let ghostImg1 = new Image();
-        ghostImg1.src = './assets/sprites/' + ghostColorCode[color] + '1.png';
+        ghostImg1.src = './assets/sprites/' + ghostColorCode[ghostData.color] + '1.png';
         let ghostImg2 = new Image();
-        ghostImg2.src = './assets/sprites/' + ghostColorCode[color] + '2.png';
-        let x = gameStartX + column;
-        let y = gameStartY + row;
+        ghostImg2.src = './assets/sprites/' + ghostColorCode[ghostData.color] + '2.png';
+        let x = gameStartX + ghostData.loc.x;
+        let y = gameStartY + ghostData.loc.y;
         let img = animate? ghostImg1: ghostImg2;
         c.save();
         c.translate(x,y);
-        c.drawImage(img, 0, 0, passageWidth - 5, passageWidth - 5);
+        let size = passageWidth - 5;
+        c.drawImage(img, -size / 2, -size / 2, size, size);
         c.restore();
     };
 
