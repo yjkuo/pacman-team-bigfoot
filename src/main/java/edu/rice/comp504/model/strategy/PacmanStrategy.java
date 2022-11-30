@@ -37,12 +37,12 @@ public class PacmanStrategy implements IUpdateStrategy {
             Point locAfterMoveInDirection = pacman.locationAfterMoveInDirection(direction);
 
 //            For Teleportation
-            if (locAfterMoveInDirection.x + pacman.getSize()/2 >= pacman.getSize() * layout.length) {
-                locAfterMoveInDirection.x = pacman.getSize()/2;
-            }
-            else if (locAfterMoveInDirection.x - pacman.getSize()/2 <= 0) {
-                locAfterMoveInDirection.x =(pacman.getSize() * layout.length) - (pacman.getSize()/2);
-            }
+//            if (locAfterMoveInDirection.x + pacman.getSize()/2 >= pacman.getSize() * layout.length) {
+//                locAfterMoveInDirection.x = pacman.getSize()/2;
+//            }
+//            else if (locAfterMoveInDirection.x - pacman.getSize()/2 <= 0) {
+//                locAfterMoveInDirection.x =(pacman.getSize() * layout.length) - (pacman.getSize()/2);
+//            }
             pacman.setLoc(locAfterMoveInDirection);
         }
     }

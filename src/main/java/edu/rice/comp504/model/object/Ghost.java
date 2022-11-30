@@ -80,6 +80,11 @@ public class Ghost extends ACharacter{
         return flashingTimer;
     }
 
+
+    public boolean canGoInDirection(int direction, int[][] layout) {
+        return false;
+    }
+
     /**
      * Set the flashing time left of the Ghost.
      * @param flashingTimer The Ghost flashing time.

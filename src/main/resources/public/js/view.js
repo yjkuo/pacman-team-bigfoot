@@ -314,6 +314,7 @@ function handleGameData(data) {
 }
 
 function initialize() {
+    console.log("initialize called")
     let payload = {
         numberOfGhosts: $("#ghost-dropdown").val(),
         lives: $("#lives-dropdown").val()
