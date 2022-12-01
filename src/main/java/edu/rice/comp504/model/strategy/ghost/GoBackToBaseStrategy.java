@@ -1,6 +1,7 @@
 package edu.rice.comp504.model.strategy.ghost;
 
 import edu.rice.comp504.model.object.ACharacter;
+import edu.rice.comp504.model.object.Ghost;
 import edu.rice.comp504.model.object.Pacman;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
 
@@ -84,7 +85,7 @@ public class GoBackToBaseStrategy implements IUpdateGhostStrategy {
                     boolean foundFirstDir = false;
                     for (int i = 0; i < directions.size(); i++) {
                         int dir = directions.get(i);
-                        if (!context.detectCollisionWithWalls(dir - 1, layout)) {
+                        if (!((Ghost) context).detectCollisionWithOnlyWalls(dir - 1, layout)) {
                             if (foundFirstDir) {
                                 backupDirection = dir;
                                 break;
