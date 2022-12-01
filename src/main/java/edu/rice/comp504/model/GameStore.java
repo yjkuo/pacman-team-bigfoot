@@ -27,8 +27,8 @@ public class GameStore {
     private int numberOfFruits;
     private int ghostScore = 200;
     private final int ghostFlashingTime = 10000; // how long ghost keeps flashing
-    private int bigDotTotalTime = 20;
-    private int bigDotTimeLeft = 20;
+    private int bigDotTotalTime = 100;
+    private int bigDotTimeLeft = 0;
     private final int maxGhosts = 4;
     private transient int[] portals = new int[2];
 //    private PropertyChangeSupport pcs;
@@ -113,6 +113,8 @@ public class GameStore {
         eatenDots = 0;
         portals = new int[2];
         numberOfFruits = 0;
+
+        bigDotTotalTime = gameLevel == 1 ? 100 : 75;
 
         resetPacman();
         resetItems();
@@ -277,7 +279,6 @@ public class GameStore {
             ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("retreat", layout));
             bigDotTimeLeft = bigDotTotalTime;
             ghost.setFlashing(true);
-//            ghost.setVel(2);
         }
     }
 
@@ -307,6 +308,17 @@ public class GameStore {
     }
 
     public void update(int direction) {
+        if (bigDotTimeLeft > 0) {
+            bigDotTimeLeft--;
+            if (bigDotTimeLeft == 0) {
+                for (Ghost ghost : ghosts) {
+                    if (ghost.isFlashing()) {
+                        ghost.setFlashing(false);
+                        ghost.setStrategyToDefault(layout);
+                    }
+                }
+            }
+        }
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
         for (Ghost ghost : ghosts) {
@@ -315,7 +327,15 @@ public class GameStore {
 
         for (Ghost ghost : ghosts) {
             if (pacman.detectCollisionObj(ghost)) {
-                pacman.reduceLive();
+                if (ghost.getUpdateStrategy().getName().equals("retreat")) {
+                    ghost.setDead(true);
+                    ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("goBackToBase", layout));
+                }
+                else if (ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
+                }
+                else {
+                    pacman.reduceLive();
+                }
             }
         }
         AItem eaten = null;

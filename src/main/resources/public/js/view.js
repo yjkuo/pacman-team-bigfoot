@@ -12,7 +12,8 @@ let latestDirection = 2;
 let gameState = {
     lives: 3,
     ghosts: 4,
-    score: 0
+    score: 0,
+    level: 1
 };
 let pacman = {
     position: {x: 50, y: 30},
@@ -98,7 +99,7 @@ function createApp(canvas) {
         c.font = "bold 40px Ariel";
         c.textAlign = "center";
         c.fillStyle = "white";
-        c.fillText("Level 1", canvas.width/2, 70);
+        c.fillText("Level " + gameState.level, canvas.width/2, 70);
         c.drawImage(grassImg, gameStartX, gameStartY, width, width)
     };
 
@@ -318,7 +319,8 @@ function handleGameData(data) {
     ghostsData = data.ghosts;
     items = data.items;
     gameState.score = data.currentScore;
-    app.clear()
+    gameState.level = data.levelCount;
+    app.clear();
     app.drawGameBoard();
 }
 
