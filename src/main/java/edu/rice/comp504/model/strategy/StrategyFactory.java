@@ -39,10 +39,10 @@ public class StrategyFactory {
                 strategy = ChaseStrategy.makeStrategy(layout);
                 break;
             case "retreat":
-                strategy = RetreatStrategy.makeStrategy();
+                strategy = RetreatStrategy.makeStrategy(layout);
                 break;
             case "goBackToBase":
-                strategy = GoBackToBaseStrategy.makeStrategy();
+                strategy = GoBackToBaseStrategy.makeStrategy(layout);
                 break;
             case "leaveTheBase":
                 strategy = LeaveTheBaseStrategy.makeStrategy(layout);
