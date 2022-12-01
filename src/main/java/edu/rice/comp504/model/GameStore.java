@@ -144,6 +144,7 @@ public class GameStore {
         Point fruitLoc = new Point(j * passageWidth + passageWidth / 2, i * passageWidth + passageWidth / 2);
         AItem fruit = new AItem("fruit", fruitLoc, "", 100, passageWidth - 6);
         items.add(fruit);
+        numberOfFruits++;
     }
 
     private void resetPacman() {
@@ -290,6 +291,9 @@ public class GameStore {
                 nextLevelFreezeTimeRemaining = 20;
             }
         }
+        else {
+            numberOfFruits--;
+        }
     }
 
     /**
@@ -297,10 +301,12 @@ public class GameStore {
      */
     public void bigDotEaten() {
         for (Ghost ghost: ghosts) {
-            ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("retreat", layout));
-            bigDotTimeLeft = bigDotTotalTime;
-            ghost.setFlashing(true);
+            if (!ghost.getUpdateStrategy().getName().equals("goBackToBase") && !ghost.getUpdateStrategy().getName().equals("leaveTheBase")) {
+                ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("retreat", layout));
+                ghost.setFlashing(true);
+            }
         }
+        bigDotTimeLeft = bigDotTotalTime;
     }
 
     /**
@@ -401,7 +407,9 @@ public class GameStore {
 
         if (timeElapsed % 150 == 0) {
             timeElapsed = 0;
-            genFruits();
+            if (numberOfFruits < 2) {
+                genFruits();
+            }
         }
 
     }
