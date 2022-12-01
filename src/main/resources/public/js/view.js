@@ -419,6 +419,12 @@ function handleGameData(data) {
     gameState.level = data.levelCount;
     app.clear();
     app.drawGameBoard();
+    if (data.nextLevelFreeze) {
+        if (data.levelCount === 1)
+            app.writeMessage("Level 2");
+        else
+            app.writeMessage("Game Won");
+    }
 }
 
 function initialize() {
