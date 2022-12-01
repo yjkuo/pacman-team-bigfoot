@@ -253,8 +253,7 @@ public class GameStore {
                 nextLevelFreeze = true;
                 nextLevelFreezeTimeRemaining = 20;
             }
-        }
-        else {
+        } else {
             numberOfFruits--;
         }
     }
