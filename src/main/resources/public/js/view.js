@@ -417,11 +417,11 @@ function initialize() {
     console.log("initialize called")
     let payload = {
         numberOfGhosts: $("#ghost-dropdown").val(),
-        lives: $("#lives-dropdown").val()
+        lives: $("#lives-dropdown").val(),
+        level: $("#level-dropdown").val()
     };
     $.get("/initialize", payload, function(data) {
         data = JSON.parse(data);
-        console.log(data);
         handleGameData(data);
         app.writeMessage("Press any key to start");
     });
