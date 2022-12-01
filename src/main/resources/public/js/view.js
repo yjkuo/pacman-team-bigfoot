@@ -13,7 +13,8 @@ let gameState = {
     lives: 3,
     ghosts: 4,
     score: 0,
-    level: 1
+    level: 1,
+    bigDotTimeLeft: 0
 };
 let pacman = {
     position: {x: 50, y: 30},
@@ -23,7 +24,8 @@ let pacman = {
     isDead: false,
     deadFrame: 1
 };
-let ghostFlashing = 0;
+let flashIdx = 0;
+let flashState = false;
 
 let grassImg = new Image();
 grassImg.src = './assets/grass.png';
@@ -33,24 +35,6 @@ let forestImg = new Image();
 forestImg.src = './assets/forest4.png';
 forestImg.alt = "Image not found";
 
-let pacmanImg1 = new Image();
-pacmanImg1.src = './assets/sprites/PacmanL1.png';
-let pacmanImg2 = new Image();
-pacmanImg2.src = './assets/sprites/PacmanL2.png';
-
-let ghosts = ['OL', 'PL', 'BL', 'RL'];
-let dirToCharacter = {
-    0: 'L',
-    1: 'U',
-    2: 'R',
-    3: 'D'
-}
-let ghostColorCode = {
-    'orange': 'O',
-    'pink' : 'P',
-    'blue' : 'B',
-    'red' : 'R'
-}
 let ghostsData = [];
 let fruitImg = new Image();
 fruitImg.src = './assets/sprites/Fruit1.png';
@@ -124,7 +108,9 @@ function createApp(canvas) {
             else if (item.name === "fruit") app.drawFruit(item.loc.x, item.loc.y);
         })
         pacman.state = !pacman.state;
-        ghostFlashing = (ghostFlashing+1) % 4;
+        flashState = gameState.bigDotTimeLeft < 40 ? true : false;
+        if (flashState) flashIdx = (flashIdx + 1) % 4;
+        else flashIdx = (flashIdx + 1) % 2;
         if (pacman.isDead) {
             app.drawDeadPacman(pacman.position.x, pacman.position.y);
             pacman.deadFrame++;
@@ -188,9 +174,8 @@ function createApp(canvas) {
         let ghostImg1;
         let ghostImg2;
         if (ghostData.isFlashing) {
-            if (ghostData.flashingTimer > 5) ghostFlashing %= 2;
-            ghostImg1 = flashGhostImg[ghostFlashing];
-            ghostImg2 = flashGhostImg[ghostFlashing];
+            ghostImg1 = flashGhostImg[flashIdx];
+            ghostImg2 = flashGhostImg[flashIdx];
         } else if (ghostData.isDead){
             ghostImg1 = deadGhostImg[ghostData.direction]
             ghostImg2 = deadGhostImg[ghostData.direction]
@@ -417,6 +402,7 @@ function handleGameData(data) {
     items = data.items;
     gameState.score = data.currentScore;
     gameState.level = data.levelCount;
+    gameState.bigDotTimeLeft = data.bigDotTimeLeft;
     app.clear();
     app.drawGameBoard();
     if (data.nextLevelFreeze) {
