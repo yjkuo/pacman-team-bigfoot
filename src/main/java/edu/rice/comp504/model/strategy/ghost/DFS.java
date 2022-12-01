@@ -12,6 +12,9 @@ public class DFS {
     Point target;
     int bestDirection;
 
+    /**
+     * Constructor call.
+     */
     public DFS(Point target, int[][] layout) {
         path = new ArrayList<>();
         visited = new HashMap<Point, Integer>();
@@ -26,6 +29,9 @@ public class DFS {
         return x > 0 && y > 0 && x < layout.length && y < layout.length && layout[y][x] != 1 && layout[y][x] != 2;
     }
 
+    /**
+     * Perform DFS.
+     */
     public int dfs(Point currentCoords) {
         for (Map.Entry<Point, Integer> entry : visited.entrySet()) {
             Point key = entry.getKey();
@@ -44,10 +50,10 @@ public class DFS {
         int y = currentCoords.y;
 
         Point[] neighbors = new Point[]{
-          new Point(x - 1, y),
-          new Point(x, y - 1),
-          new Point(x + 1, y),
-          new Point(x, y + 1)
+            new Point(x - 1, y),
+            new Point(x, y - 1),
+            new Point(x + 1, y),
+            new Point(x, y + 1)
         };
 
         int dist = -1;

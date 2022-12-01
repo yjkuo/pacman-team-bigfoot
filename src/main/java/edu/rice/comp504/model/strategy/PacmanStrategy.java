@@ -14,15 +14,15 @@ import java.util.List;
 
 public class PacmanStrategy implements IUpdateStrategy {
     private int[][] layout;
+
     public PacmanStrategy(int[][] layout) {
         this.layout = layout;
     }
 
     /**
      * Update the state of a character.
-     *
      * @param character  The character to apply the strategy to.
-     * @param aCharacter
+     * @param aCharacter The character to apply the strategy to.
      */
     public void updateState(ACharacter character, ACharacter aCharacter) {
         Pacman pacman = (Pacman) character;

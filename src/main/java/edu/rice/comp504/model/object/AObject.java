@@ -70,11 +70,10 @@ public class AObject {
      * @param loc  The object coordinate.
      */
     public void setLoc(Point loc) {
-        if (loc.x + this.getSize()/2 >= 20 * 28) {
-            loc.x = this.getSize()/2;
-        }
-        else if (loc.x - this.getSize()/2 <= 0) {
-            loc.x =(20 * 28) - (this.getSize()/2);
+        if (loc.x + this.getSize() / 2 >= 20 * 28) {
+            loc.x = this.getSize() / 2;
+        } else if (loc.x - this.getSize() / 2 <= 0) {
+            loc.x = (20 * 28) - (this.getSize() / 2);
         }
         this.loc = new Point(loc.x, loc.y);;
     }

@@ -38,6 +38,10 @@ public class LeaveTheBaseStrategy implements IUpdateGhostStrategy{
 
         return singleton;
     }
+
+    /**
+     * Strategy update.
+     */
     @Override
     public void updateState(ACharacter pacman, ACharacter ghost) {
         if (ghost != null) {
@@ -48,8 +52,7 @@ public class LeaveTheBaseStrategy implements IUpdateGhostStrategy{
                         Point loc = ghost.getLoc();
                         loc.y--;
                         ghost.setLoc(loc);
-                    }
-                    else {
+                    } else {
 //                        System.out.println(ghost.getLoc());
                         Ghost gh = (Ghost) ghost;
                         gh.setStrategyToDefault(layout);

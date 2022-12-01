@@ -31,7 +31,7 @@ public class StrategyFactory {
      */
     public IUpdateStrategy makeStrategy(String type, int[][] layout) {
         IUpdateStrategy strategy = null;
-        switch (type){
+        switch (type) {
             case "walk":
                 strategy = WalkStrategy.makeStrategy(layout);
                 break;
@@ -46,6 +46,7 @@ public class StrategyFactory {
                 break;
             case "leaveTheBase":
                 strategy = LeaveTheBaseStrategy.makeStrategy(layout);
+                break;
             default:
                 break;
         }

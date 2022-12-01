@@ -92,11 +92,13 @@ public class ACharacter extends AObject implements PropertyChangeListener {
     }
 
 
-
+    /**
+     * Move pacman to location given a direction.
+     */
     public Point locationAfterMoveInDirection(int direction) {
         Point loc = new Point((int) this.getLoc().getX(), (int) this.getLoc().getY());
         int vel = this.getVel();
-        switch(direction) {
+        switch (direction) {
             case 0: {
                 loc.x -= vel;
                 break;

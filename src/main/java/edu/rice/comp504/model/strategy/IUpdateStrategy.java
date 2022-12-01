@@ -7,7 +7,7 @@ public interface IUpdateStrategy {
      * Update the state of a character.
      *
      * @param character  The character to apply the strategy to.
-     * @param aCharacter
+     * @param aCharacter The character to apply the strategy to.
      */
     public void updateState(ACharacter character, ACharacter aCharacter);
 
