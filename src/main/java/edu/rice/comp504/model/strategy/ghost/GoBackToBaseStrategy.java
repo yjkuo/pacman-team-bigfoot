@@ -4,6 +4,7 @@ import edu.rice.comp504.model.object.ACharacter;
 import edu.rice.comp504.model.object.Ghost;
 import edu.rice.comp504.model.object.Pacman;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
+import edu.rice.comp504.model.strategy.StrategyFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,6 +52,9 @@ public class GoBackToBaseStrategy implements IUpdateGhostStrategy {
                         } else if (currentLoc.y > originalLoc.y) {
                             newLoc = new Point(currentLoc.x, currentLoc.y - context.getVel());
                             dir = 3;
+                        } else {
+                            IUpdateStrategy leaveTheBase = StrategyFactory.makeStrategyFactory().makeStrategy("leaveTheBase", layout);
+                            context.setUpdateStrategy(leaveTheBase);
                         }
                     }
                     context.setDirection(dir);
