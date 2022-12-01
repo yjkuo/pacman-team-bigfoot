@@ -32,7 +32,7 @@ public class UpdateCmd implements ICharacterCmd{
             if (pacman.getName().equals("pacman")) {
                 Pacman pacmanTemp = (Pacman) pacman;
                 if (context.getName().equals("pacman")) {
-                     context.getUpdateStrategy().updateState(pacmanTemp, context);
+                    context.getUpdateStrategy().updateState(pacmanTemp, context);
                 } else if (context.getName().equals("ghost")) {
                     Pacman pacmanObj = (Pacman) pacman;
                     context.getUpdateStrategy().updateState(pacmanTemp, context);

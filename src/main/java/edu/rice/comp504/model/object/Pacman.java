@@ -18,7 +18,7 @@ public class Pacman extends ACharacter{
      * @param color          The ACharacter color
      * @param updateStrategy The object updateStrategy
      * @param direction      The character direction
-     * @param size
+     * @param size           The character size
      */
     public Pacman(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy, int direction, int size) {
         super(name, loc, vel, color, updateStrategy, direction, size);
@@ -42,16 +42,16 @@ public class Pacman extends ACharacter{
     }
 
     /**
-     * Set the next direction
-     * @param direction  The new next direction
+     * Set the next direction.
+     * @param direction  The new next direction.
      */
     public void setNextDirection(int direction) {
         this.nextDirection = direction;
     }
 
     /**
-     * Check if pacman collide with ghost
-     * @param obj The object to check
+     * Check if pacman collide with ghost.
+     * @param obj The object to check.
      */
     public boolean detectCollisionObj(AObject obj) {
         Point ghostLoc = obj.getLoc();

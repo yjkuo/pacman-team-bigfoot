@@ -22,7 +22,7 @@ public class Ghost extends ACharacter{
      * @param color          The ACharacter color
      * @param updateStrategy The object updateStrategy
      * @param direction      The character direction
-     * @param size
+     * @param size           The character size
      */
     public Ghost(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy, int direction, int size,
                  boolean isFlashing, boolean isDead, int flashingTimer) {
@@ -80,10 +80,12 @@ public class Ghost extends ACharacter{
         return flashingTimer;
     }
 
-
+    /**
+     * Check if ghost can go in this direction.
+     */
     public boolean canGoInDirection(int direction, int[][] layout) {
         Point locAfterMoveInDirection = this.getLoc();
-        switch(direction) {
+        switch (direction) {
             case 0: {
                 locAfterMoveInDirection.x -= 1;
                 break;
@@ -132,6 +134,9 @@ public class Ghost extends ACharacter{
         this.flashingTimer = flashingTimer;
     }
 
+    /**
+     * Set the ghost default strategy.
+     */
     public void setStrategyToDefault(int[][] layout) {
         switch (this.getColor()) {
             case ("orange") : {
@@ -154,10 +159,13 @@ public class Ghost extends ACharacter{
         }
     }
 
+    /**
+     * Move ghost to location given a direction.
+     */
     public Point locationAfterMoveInDirection(int direction) {
         Point loc = new Point((int) this.getLoc().getX(), (int) this.getLoc().getY());
         int vel = this.getVel();
-        switch(direction) {
+        switch (direction) {
             case 0: {
                 loc.x -= vel;
                 break;
@@ -207,7 +215,7 @@ public class Ghost extends ACharacter{
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      */
     public void executeCommand(ICharacterCmd command, ACharacter pacman) {
         command.execute(pacman, this);

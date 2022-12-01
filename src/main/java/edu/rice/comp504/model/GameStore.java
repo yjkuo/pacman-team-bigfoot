@@ -43,26 +43,30 @@ public class GameStore {
     private boolean nextLevelFreeze = false;
 
     private IUpdateStrategy pacmanStrategy;
-    Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
-    Point yellow_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 12 * passageWidth + passageWidth / 2);
-    Point pink_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 12 * passageWidth + passageWidth / 2);
-    Point blue_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 13 * passageWidth + passageWidth / 2);
-    Point red_ghostStartLoc = new Point (14 * passageWidth + passageWidth/2, 13 * passageWidth + passageWidth / 2);
+    Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth / 2,17 * passageWidth + passageWidth / 2);
+    Point yellowGhostStartLoc = new Point(13 * passageWidth + passageWidth / 2, 12 * passageWidth + passageWidth / 2);
+    Point pinkGhostStartLoc = new Point(14 * passageWidth + passageWidth / 2, 12 * passageWidth + passageWidth / 2);
+    Point blueGhostStartLoc = new Point(13 * passageWidth + passageWidth / 2, 13 * passageWidth + passageWidth / 2);
+    Point redGhostStartLoc = new Point(14 * passageWidth + passageWidth / 2, 13 * passageWidth + passageWidth / 2);
 
 
-    Map<Integer, String> ghostIndexColorMap  = new HashMap<Integer, String>() {{
-        put(0, "orange");
-        put(1, "pink");
-        put(2, "blue");
-        put(3, "red");
-    }};
+    Map<Integer, String> ghostIndexColorMap  = new HashMap<Integer, String>(){
+        {
+            put(0, "orange");
+            put(1, "pink");
+            put(2, "blue");
+            put(3, "red");
+        }
+    };
 
-    Map<String, Point> ghostColorStartLocMap  = new HashMap<String, Point>() {{
-        put("orange", yellow_ghostStartLoc);
-        put("pink", pink_ghostStartLoc);
-        put("blue", blue_ghostStartLoc);
-        put("red", red_ghostStartLoc);
-    }};
+    Map<String, Point> ghostColorStartLocMap  = new HashMap<String, Point>(){
+        {
+            put("orange", yellowGhostStartLoc);
+            put("pink", pinkGhostStartLoc);
+            put("blue", blueGhostStartLoc);
+            put("red", redGhostStartLoc);
+        }
+    };
 
     /**
      * Constructor.
@@ -128,6 +132,7 @@ public class GameStore {
         resetItems();
         resetGhosts();
     }
+
     private void genFruits() {
         Random rand = new Random();
         int i = rand.nextInt(layout.length);
@@ -136,7 +141,7 @@ public class GameStore {
             i = rand.nextInt(layout.length);
             j = rand.nextInt(layout[0].length);
         }
-        Point fruitLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+        Point fruitLoc = new Point(j * passageWidth + passageWidth / 2, i * passageWidth + passageWidth / 2);
         AItem fruit = new AItem("fruit", fruitLoc, "", 100, passageWidth - 6);
         items.add(fruit);
         numberOfFruits++;
@@ -165,12 +170,11 @@ public class GameStore {
         for (int i = 0; i < this.layout.length; i++) {
             for (int j = 0; j < this.layout[0].length; j++) {
                 if (this.layout[i][j] == 0) {
-                    Point smallDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                    Point smallDotLoc = new Point(j * passageWidth + passageWidth / 2, i * passageWidth + passageWidth / 2);
                     AItem smallDot = new AItem("smallDot", smallDotLoc, "white", 10, 3);
                     items.add(smallDot);
-                }
-                else if (this.layout[i][j] == 3) {
-                    Point largeDotLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+                } else if (this.layout[i][j] == 3) {
+                    Point largeDotLoc = new Point(j * passageWidth + passageWidth / 2, i * passageWidth + passageWidth / 2);
                     AItem largeDot = new AItem("bigDot", largeDotLoc, "white", 50, 6);
                     items.add(largeDot);
                 }
@@ -292,7 +296,9 @@ public class GameStore {
         }
     }
 
-
+    /**
+     * Change ghost after big dot eaten.
+     */
     public void bigDotEaten() {
         for (Ghost ghost: ghosts) {
             if (!ghost.getUpdateStrategy().getName().equals("goBackToBase") && !ghost.getUpdateStrategy().getName().equals("leaveTheBase")) {
@@ -328,6 +334,9 @@ public class GameStore {
         //TODO
     }
 
+    /**
+     * Update the game store.
+     */
     public void update(int direction) {
         if (nextLevelFreeze) {
             nextLevelFreezeTimeRemaining--;
@@ -374,10 +383,9 @@ public class GameStore {
                     ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("goBackToBase", layout));
                     currentScore += ghostScore;
                     ghostScore *= 2;
-                }
-                else if (ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
-                }
-                else {
+                } else if (ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
+                    // TODO important
+                } else {
                     this.lives--;
                     gameFreeze = true;
                     timeStamp = timeElapsed;

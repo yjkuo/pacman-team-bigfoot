@@ -40,10 +40,10 @@ public class GoBackToBaseStrategy implements IUpdateGhostStrategy {
                     Point originalLoc = context.getOriginalLoc();
                     int dir = 0;
                     if (currentLoc.x < originalLoc.x) {
-                        newLoc = new Point (currentLoc.x + context.getVel(), currentLoc.y);
+                        newLoc = new Point(currentLoc.x + context.getVel(), currentLoc.y);
                         dir = 2;
                     } else if (currentLoc.x > originalLoc.x) {
-                        newLoc = new Point (currentLoc.x - context.getVel(), currentLoc.y);
+                        newLoc = new Point(currentLoc.x - context.getVel(), currentLoc.y);
                         dir = 0;
                     } else {
                         if (currentLoc.y < originalLoc.y) {

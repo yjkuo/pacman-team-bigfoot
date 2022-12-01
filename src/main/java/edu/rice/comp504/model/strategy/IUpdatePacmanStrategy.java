@@ -11,7 +11,7 @@ public interface IUpdatePacmanStrategy extends IUpdateStrategy{
      * Update the state of Pacman.
      *
      * @param pacman     The pacman to apply the strategy to.
-     * @param aCharacter
+     * @param aCharacter The character to apply the strategy to.
      */
     public void updateState(ACharacter pacman, ACharacter aCharacter);
 
