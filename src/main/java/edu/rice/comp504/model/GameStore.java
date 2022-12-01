@@ -4,14 +4,11 @@ import edu.rice.comp504.model.cmd.CmdFactory;
 import edu.rice.comp504.model.cmd.ICharacterCmd;
 import edu.rice.comp504.model.cmd.SwitchStrategyCmd;
 import edu.rice.comp504.model.object.*;
-import edu.rice.comp504.model.strategy.IUpdatePacmanStrategy;
 import edu.rice.comp504.model.strategy.IUpdateStrategy;
 import edu.rice.comp504.model.strategy.PacmanStrategy;
 import edu.rice.comp504.model.strategy.StrategyFactory;
-import edu.rice.comp504.model.strategy.ghost.IUpdateGhostStrategy;
 
 import java.awt.*;
-import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.List;
 
@@ -20,12 +17,14 @@ public class GameStore {
     private List<AItem> items;
     private List<Ghost> ghosts;
     private int lives;
+    private int initialLives;
     private int currentScore;
     private int eatenDots;
     private int levelCount;
     private int numberOfGhosts;
     private int numberOfFruits;
     private int ghostScore = 200;
+    private int singleGhostScore = 200;
     private final int ghostFlashingTime = 10000; // how long ghost keeps flashing
     private int bigDotTotalTime = 100;
     private int bigDotTimeLeft = 0;
@@ -36,10 +35,12 @@ public class GameStore {
     private int timeElapsed = 0;
     private int endTime;
     private int timeStamp;
+    private int nextLevelFreezeTimeRemaining;
     private int[][] layout;
     private int passageWidth = 20;
 
     private boolean gameFreeze = false;
+    private boolean nextLevelFreeze = false;
 
     private IUpdateStrategy pacmanStrategy;
     Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
@@ -113,6 +114,7 @@ public class GameStore {
         this.levelCount = gameLevel;
         this.numberOfGhosts = numberOfGhosts;
         this.lives = lives;
+        this.initialLives = lives;
         currentScore = 0;
         eatenDots = 0;
         portals = new int[2];
@@ -277,6 +279,13 @@ public class GameStore {
             bigDotEaten();
         }
         currentScore += dot.getScore();
+        if (!dot.getName().equals("fruit")) {
+            eatenDots++;
+            if (eatenDots == 244) {
+                nextLevelFreeze = true;
+                nextLevelFreezeTimeRemaining = 20;
+            }
+        }
     }
 
 
@@ -314,6 +323,14 @@ public class GameStore {
     }
 
     public void update(int direction) {
+        if (nextLevelFreeze) {
+            nextLevelFreezeTimeRemaining--;
+            if (nextLevelFreezeTimeRemaining <= 0) {
+                nextLevelFreeze = false;
+                init(2, numberOfGhosts, initialLives);
+            }
+            return;
+        }
         timeElapsed++;
         if (gameFreeze) {
             if (timeElapsed - timeStamp == 20) {
@@ -327,6 +344,7 @@ public class GameStore {
         if (bigDotTimeLeft > 0) {
             bigDotTimeLeft--;
             if (bigDotTimeLeft == 0) {
+                ghostScore = singleGhostScore;
                 for (Ghost ghost : ghosts) {
                     if (ghost.isFlashing()) {
                         ghost.setFlashing(false);
