@@ -8,8 +8,7 @@ import java.awt.*;
 public class Pacman extends ACharacter{
     private int leftLives;
     private int nextDirection;
-    private int deadState;
-    private int deadSpeed = 0;
+
     /**
      * Constructor.
      *
@@ -24,28 +23,6 @@ public class Pacman extends ACharacter{
     public Pacman(String name, Point loc, int vel, String color, IUpdateStrategy updateStrategy, int direction, int size) {
         super(name, loc, vel, color, updateStrategy, direction, size);
         nextDirection = direction;
-    }
-
-    /**
-     * Set the pacman as dead or update its dead state.
-     */
-    public void setDeadState() {
-        if (deadState == -1) {
-            deadState = 0;
-            reduceLive();
-        } else if (deadState <= 12) {
-            deadState++;
-        } else {
-            deadState = -1;
-        }
-    }
-
-    /**
-     * Get the dead state of pacman.
-     * @return the dead state of pacman.
-     */
-    public int getDeadState() {
-        return deadState;
     }
 
     /**
@@ -86,17 +63,6 @@ public class Pacman extends ACharacter{
 
     public void executeCommand(ICharacterCmd command) {
         command.execute(this);
-        if (deadState != -1) {
-            deadSpeed++;
-            if (deadSpeed > 4) {
-                deadState++;
-                deadSpeed = 0;
-            }
-            if (deadState > 12) {
-                reset();
-                deadState = -1;
-            }
-        }
     }
 
     /**
