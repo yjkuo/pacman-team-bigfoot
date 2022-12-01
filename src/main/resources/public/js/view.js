@@ -340,10 +340,17 @@ window.onload = function() {
         gameState.ghosts = $("#ghost-dropdown").val();
         initialize();
     });
+    $(".reset-game").change(function(){
+        $(".reset-game").blur();
+        initialize();
+    });
     initialize();
 };
 
 function updateCanvas() {
+    if (intervalID === -1) {
+        return;
+    }
     let payload = {
         direction: latestDirection,
     };
@@ -414,7 +421,8 @@ function handleGameData(data) {
 }
 
 function initialize() {
-    console.log("initialize called")
+    clearInterval(intervalID);
+    intervalID = -1;
     let payload = {
         numberOfGhosts: $("#ghost-dropdown").val(),
         lives: $("#lives-dropdown").val(),
