@@ -327,14 +327,24 @@ public class GameStore {
         for (Ghost ghost : ghosts) {
             ghost.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"), pacman);
         }
-
+        List<Ghost> eatenGhosts = new ArrayList();
         for (Ghost ghost : ghosts) {
             if (pacman.detectCollisionObj(ghost)) {
-                pacman.reduceLive();
-                gameFreeze = true;
-                timeStamp = timeElapsed;
+                if (ghost.isFlashing()) {
+                    currentScore += ghostScore;
+                    ghostScore *= 2;
+                    eatenGhosts.add(ghost);
+                } else {
+                    this.lives--;
+                    gameFreeze = true;
+                    timeStamp = timeElapsed;
+                }
             }
         }
+        for (Ghost ghost: eatenGhosts) {
+            ghosts.remove(ghost);
+        }
+
         AItem eaten = null;
         for (AItem item : items) {
             if (pacman.detectCollisionObj(item)) {
