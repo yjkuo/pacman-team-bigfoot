@@ -29,8 +29,6 @@ public class GameStore {
     private int bigDotTotalTime = 100;
     private int bigDotTimeLeft = 0;
     private final int maxGhosts = 4;
-    private transient int[] portals = new int[2];
-//    private PropertyChangeSupport pcs;
     public static final int updatePeriod = 60;
     private int timeElapsed = 0;
     private int endTime;
@@ -72,7 +70,6 @@ public class GameStore {
      * Constructor.
      */
     public GameStore() {
-//        pcs = new PropertyChangeSupport(this);
         this.layout = new int[][]{
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
                 {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,},
@@ -121,7 +118,6 @@ public class GameStore {
         this.initialLives = lives;
         currentScore = 0;
         eatenDots = 0;
-        portals = new int[2];
         numberOfFruits = 0;
         timeElapsed = 0;
         gameFreeze = false;
@@ -199,15 +195,6 @@ public class GameStore {
     }
 
     /**
-     * Get the lives.
-     * @return the lives.
-     */
-    public int getLives() {
-        //TODO
-        return 0;
-    }
-
-    /**
      * Get the current score.
      * @return the current score.
      */
@@ -230,30 +217,6 @@ public class GameStore {
      */
     public int getNumberOfFruits() {
         return numberOfFruits;
-    }
-
-
-    /**
-     * If the game is over.
-     * @return if the game is over.
-     */
-    public boolean isGameOver() {
-        //TODO
-        return false;
-    }
-
-
-    /**
-     * Set the game settings.
-     * @param gameLevel Game level.
-     * @param numGhosts Number of ghosts.
-     * @param numLives  Number of lives.
-     */
-    public void setGameParameters(int gameLevel, int numGhosts, int numLives) {
-        levelCount = gameLevel;
-        numberOfGhosts = numGhosts;
-        lives = numLives;
-//        init();
     }
 
     /**
@@ -307,31 +270,6 @@ public class GameStore {
             }
         }
         bigDotTimeLeft = bigDotTotalTime;
-    }
-
-    /**
-     * Remove a big dot.
-     * @param dot big dot needs to be removed
-     * @param isEaten if the big dot is eaten
-     */
-    public void removeBigDot(AItem dot, boolean isEaten) {
-        //TODO
-    }
-
-    /**
-     * Remove a fruit.
-     * @param fruit fruit needs to be removed
-     * @param isEaten if the fruit is eaten
-     */
-    public void removeFruit(AItem fruit, boolean isEaten) {
-        //TODO
-    }
-
-    /**
-     * Remove all PropertyChangeListener.
-     */
-    public void removeAll() {
-        //TODO
     }
 
     /**
@@ -411,56 +349,5 @@ public class GameStore {
                 genFruits();
             }
         }
-
-    }
-
-    /**
-     * Extra action for characters.
-     */
-    private void ghostsAction() {
-        for (Ghost ghost : this.getGhosts()) {
-            ICharacterCmd switchCmd = null;
-            if (ghost.isFlashing() && ghost.getFlashingTimer() <= 0) {
-                ghost.setFlashing(false);
-                switchCmd = resetGhostStrategy(ghost, switchCmd);
-                this.setGhostScore(200);
-            } else if ((ghost.getLoc().equals(ghost.getOriginalLoc()) && ghost.isDead())) {
-                switchCmd = resetGhostStrategy(ghost, switchCmd);
-                ghost.setDead(false);
-            } else if (ghost.isDead()) {
-                if (!ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
-                    switchCmd = new SwitchStrategyCmd("goBackToBase", layout);
-                    setCurrentScore(getCurrentScore() + getGhostScore());
-                    setGhostScore(getGhostScore() * 2);
-                }
-            } else if (ghost.isFlashing()) {
-                switchCmd = new SwitchStrategyCmd("retreat", layout);
-            }
-            if (switchCmd != null) {
-                switchCmd.execute(ghost);
-            }
-        }
-    }
-
-    /**
-     * Reset the ghost strategy based on ghost's color.
-     * @param ghost The ghost object.
-     * @param switchCmd Switch Command.
-     * @return The Switch Command.
-     */
-    private ICharacterCmd resetGhostStrategy(Ghost ghost, ICharacterCmd switchCmd) {
-        switch (ghost.getColor()) {
-            case "red":
-            case "blue":
-                switchCmd = new SwitchStrategyCmd("chase", layout);
-                break;
-            case "orange":
-            case "pink":
-                switchCmd = new SwitchStrategyCmd("walk", layout);
-                break;
-            default:
-                break;
-        }
-        return switchCmd;
     }
 }

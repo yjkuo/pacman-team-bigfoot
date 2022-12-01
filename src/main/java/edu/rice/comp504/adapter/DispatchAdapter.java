@@ -37,13 +37,4 @@ public class DispatchAdapter {
         store.update(direction);
         return store;
     }
-
-    /**
-     * Get game store.
-     * @return The game store.
-     */
-    public static GameStore getStore() {
-        //TODO
-        return store;
-    }
 }
