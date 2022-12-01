@@ -35,8 +35,12 @@ public class GameStore {
     public static final int updatePeriod = 60;
     private int timeElapsed = 0;
     private int endTime;
+    private int timeStamp;
     private int[][] layout;
     private int passageWidth = 20;
+
+    private boolean gameFreeze = false;
+
     private IUpdateStrategy pacmanStrategy;
     Point pacmanStartLoc = new Point(14 * passageWidth + passageWidth/2,17 * passageWidth + passageWidth / 2);
     Point yellow_ghostStartLoc = new Point (13 * passageWidth + passageWidth/2, 12 * passageWidth + passageWidth / 2);
@@ -113,6 +117,8 @@ public class GameStore {
         eatenDots = 0;
         portals = new int[2];
         numberOfFruits = 0;
+        timeElapsed = 0;
+        gameFreeze = false;
 
         bigDotTotalTime = gameLevel == 1 ? 100 : 75;
 
@@ -308,6 +314,16 @@ public class GameStore {
     }
 
     public void update(int direction) {
+        timeElapsed++;
+        if (gameFreeze) {
+            if (timeElapsed - timeStamp == 20) {
+                resetGhosts();
+                resetPacman();
+                gameFreeze = false;
+            }
+            return;
+        }
+
         if (bigDotTimeLeft > 0) {
             bigDotTimeLeft--;
             if (bigDotTimeLeft == 0) {
@@ -319,6 +335,7 @@ public class GameStore {
                 }
             }
         }
+
         pacman.setNextDirection(direction);
         pacman.executeCommand(CmdFactory.makeCmdFactory().makeCmd("Update"));
         for (Ghost ghost : ghosts) {
@@ -335,6 +352,9 @@ public class GameStore {
                 }
                 else {
                     pacman.reduceLive();
+                    gameFreeze = true;
+                    timeStamp = timeElapsed;
+                    return;
                 }
             }
         }
@@ -348,7 +368,7 @@ public class GameStore {
         if (eaten != null) {
             removeDot(eaten, true);
         }
-        timeElapsed++;
+
         if (timeElapsed % 150 == 0) {
             timeElapsed = 0;
             genFruits();

@@ -135,24 +135,77 @@ public class Ghost extends ACharacter{
     public void setStrategyToDefault(int[][] layout) {
         switch (this.getColor()) {
             case ("orange") : {
-                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
                 break;
             }
             case ("pink") : {
-                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
-                break;
-            }
-            case ("blue") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
                 break;
             }
-            case ("red") : {
+            case ("blue") : {
                 this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("walk", layout));
+                break;
+            }
+            case ("red") : {
+                this.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("chase", layout));
                 break;
             }
             default:
         }
     }
+
+    public Point locationAfterMoveInDirection(int direction) {
+        Point loc = new Point((int) this.getLoc().getX(), (int) this.getLoc().getY());
+        int vel = this.getVel();
+        switch(direction) {
+            case 0: {
+                loc.x -= vel;
+                break;
+            }
+            case 1: {
+                loc.y -= vel;
+                break;
+            }
+            case 2: {
+                loc.x += vel;
+                break;
+            }
+            case 3: {
+                loc.y += vel;
+                break;
+            }
+            default:
+        }
+        return loc;
+    }
+
+    /**
+     * Detects collision between a ACharacter and a wall in the ACharacter world.  Change direction if ACharacter collides with a wall.
+     * @return if it collides with a wall within a step.
+     */
+    public boolean detectCollisionWithOnlyWalls(int direction, int[][] layout) {
+        Point locAfterMoveInDirection = locationAfterMoveInDirection(direction);
+        int pacmanHalfSize = (this.size / 2);
+        Point topLeft = new Point(locAfterMoveInDirection.x - pacmanHalfSize, locAfterMoveInDirection.y - pacmanHalfSize);
+        Point topRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize - 1, locAfterMoveInDirection.y - pacmanHalfSize);
+        Point bottomLeft = new Point(locAfterMoveInDirection.x - pacmanHalfSize, locAfterMoveInDirection.y + pacmanHalfSize - 1);
+        Point bottomRight = new Point(locAfterMoveInDirection.x + pacmanHalfSize - 1, locAfterMoveInDirection.y + pacmanHalfSize - 1);
+
+        Point[] points = {topLeft, topRight, bottomLeft, bottomRight};
+        for (int i = 0; i < points.length; i++) {
+            int xCoord = points[i].x / 20;
+            int yCoord = points[i].y / 20;
+//            In case of teleportation
+            xCoord = Math.max(xCoord, 0);
+            xCoord = Math.min(xCoord, layout.length - 1);
+
+            if (layout[yCoord][xCoord] == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Execute the command
      */

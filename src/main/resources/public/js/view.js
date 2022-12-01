@@ -19,7 +19,9 @@ let pacman = {
     position: {x: 50, y: 30},
     velocity: {x: 0, y: 0},
     dir: 2,
-    state: false
+    state: false,
+    isDead: false,
+    deadFrame: 1
 };
 let ghostFlashing = 0;
 
@@ -123,9 +125,16 @@ function createApp(canvas) {
         })
         pacman.state = !pacman.state;
         ghostFlashing = (ghostFlashing+1) % 4;
-        app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
-        for (let i = 0; i < ghostsData.length; ++i) {
-            app.drawGhost(ghostsData[i], pacman.state);
+        if (pacman.isDead) {
+            app.drawDeadPacman(pacman.position.x, pacman.position.y);
+            pacman.deadFrame++;
+            if (pacman.deadFrame > 12) pacman.deadFrame = 12;
+        } else {
+            pacman.deadFrame = 1;
+            app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
+            for (let i = 0; i < ghostsData.length; ++i) {
+                app.drawGhost(ghostsData[i], pacman.state);
+            }
         }
         // app.drawFruit(1, 12);
         // app.drawFruit(20, 4);
@@ -153,7 +162,7 @@ function createApp(canvas) {
         // let y = gameStartY + passageWidth * row + passageWidth / 2;
         let x = gameStartX + row;
         let y = gameStartY + column;
-        let img = animate? pacmanImg1: pacmanImg2;
+        let img = animate? pacmanImg[0]: pacmanImg[1];
         let size = passageWidth - 5;
         c.save();
         c.translate(x,y);
@@ -162,21 +171,29 @@ function createApp(canvas) {
         c.restore();
     };
 
+    let drawDeadPacman = function(row, column) {
+        let x = gameStartX + row;
+        let y = gameStartY + column;
+        let size = passageWidth - 5;
+        c.save();
+        c.translate(x,y);
+        c.drawImage(deadPacmanImg[pacman.deadFrame-1], -size / 2, -size / 2, size, size);
+        c.restore();
+    };
+
     let drawGhost = function(ghostData, animate) {
-        let ghostImg1 = new Image();
-        let ghostImg2 = new Image();
+        let ghostImg1;
+        let ghostImg2;
         if (ghostData.isFlashing) {
-            let flashState
-            if (ghostData.flashingTimer > 5) flashState = 'A'
-            else flashState= ghostFlashing > 1? 'A': 'B';
-            ghostImg1.src = './assets/sprites/Flash' + flashState + '1.png';
-            ghostImg2.src = './assets/sprites/Flash' + flashState + '2.png';
+            if (ghostData.flashingTimer > 5) ghostFlashing %= 2;
+            ghostImg1 = flashGhostImg[ghostFlashing];
+            ghostImg2 = flashGhostImg[ghostFlashing];
         } else if (ghostData.isDead){
-            ghostImg1.src = './assets/sprites/DeadGhost' + dirToCharacter[ghostData.direction] + '.png';
-            ghostImg2.src = './assets/sprites/DeadGhost' + dirToCharacter[ghostData.direction] + '.png';
+            ghostImg1 = deadGhostImg[ghostData.direction]
+            ghostImg2 = deadGhostImg[ghostData.direction]
         } else {
-            ghostImg1.src = './assets/sprites/' + ghostColorCode[ghostData.color] + dirToCharacter[ghostData.direction] + '1.png';
-            ghostImg2.src = './assets/sprites/' + ghostColorCode[ghostData.color] + dirToCharacter[ghostData.direction] + '2.png';
+            ghostImg1 = ghostImg[ghostData.color][ghostData.direction][0];
+            ghostImg2 = ghostImg[ghostData.color][ghostData.direction][1];
         }
         let x = gameStartX + ghostData.loc.x;
         let y = gameStartY + ghostData.loc.y;
@@ -242,6 +259,7 @@ function createApp(canvas) {
         drawPassageBlock,
         drawDot,
         drawPacman,
+        drawDeadPacman,
         drawGhost,
         drawFruit,
         gamePause,
@@ -249,10 +267,74 @@ function createApp(canvas) {
     }
 }
 
+function loadImg(src) {
+    let img = new Image();
+    img.src = src;
+    return img;
+}
+function preloadImages() {
+    window.pacmanImg = [
+        loadImg('./assets/sprites/PacmanL1.png'),
+        loadImg('./assets/sprites/PacmanL2.png')
+    ];
+    window.deadPacmanImg = [
+        loadImg('./assets/sprites/DeadPacman1.png'),
+        loadImg('./assets/sprites/DeadPacman2.png'),
+        loadImg('./assets/sprites/DeadPacman3.png'),
+        loadImg('./assets/sprites/DeadPacman4.png'),
+        loadImg('./assets/sprites/DeadPacman5.png'),
+        loadImg('./assets/sprites/DeadPacman6.png'),
+        loadImg('./assets/sprites/DeadPacman7.png'),
+        loadImg('./assets/sprites/DeadPacman8.png'),
+        loadImg('./assets/sprites/DeadPacman9.png'),
+        loadImg('./assets/sprites/DeadPacman10.png'),
+        loadImg('./assets/sprites/DeadPacman11.png'),
+        loadImg('./assets/sprites/DeadPacman12.png')
+    ];
+    window.ghostImg = {
+        'orange': [
+            [loadImg('./assets/sprites/OL1.png'), loadImg('./assets/sprites/OL2.png')],
+            [loadImg('./assets/sprites/OU1.png'), loadImg('./assets/sprites/OU2.png')],
+            [loadImg('./assets/sprites/OR1.png'), loadImg('./assets/sprites/OR2.png')],
+            [loadImg('./assets/sprites/OD1.png'), loadImg('./assets/sprites/OD2.png')],
+        ],
+        'pink': [
+            [loadImg('./assets/sprites/PL1.png'), loadImg('./assets/sprites/PL2.png')],
+            [loadImg('./assets/sprites/PU1.png'), loadImg('./assets/sprites/PU2.png')],
+            [loadImg('./assets/sprites/PR1.png'), loadImg('./assets/sprites/PR2.png')],
+            [loadImg('./assets/sprites/PD1.png'), loadImg('./assets/sprites/PD2.png')],
+        ],
+        'blue': [
+            [loadImg('./assets/sprites/BL1.png'), loadImg('./assets/sprites/BL2.png')],
+            [loadImg('./assets/sprites/BU1.png'), loadImg('./assets/sprites/BU2.png')],
+            [loadImg('./assets/sprites/BR1.png'), loadImg('./assets/sprites/BR2.png')],
+            [loadImg('./assets/sprites/BD1.png'), loadImg('./assets/sprites/BD2.png')],
+        ],
+        'red': [
+            [loadImg('./assets/sprites/RL1.png'), loadImg('./assets/sprites/RL2.png')],
+            [loadImg('./assets/sprites/RU1.png'), loadImg('./assets/sprites/RU2.png')],
+            [loadImg('./assets/sprites/RR1.png'), loadImg('./assets/sprites/RR2.png')],
+            [loadImg('./assets/sprites/RD1.png'), loadImg('./assets/sprites/RD2.png')],
+        ]
+    }
+    window.flashGhostImg = [
+        loadImg('./assets/sprites/FlashA1.png'),
+        loadImg('./assets/sprites/FlashA2.png'),
+        loadImg('./assets/sprites/FlashB1.png'),
+        loadImg('./assets/sprites/FlashB2.png')
+    ]
+    window.deadGhostImg = [
+        loadImg('./assets/sprites/DeadGhostL.png'),
+        loadImg('./assets/sprites/DeadGhostU.png'),
+        loadImg('./assets/sprites/DeadGhostR.png'),
+        loadImg('./assets/sprites/DeadGhostD.png')
+    ]
+}
 
 window.onload = function() {
     app = createApp(document.querySelector("canvas"));
     // intervalID = setInterval(updateCanvas, 100);
+    preloadImages();
     gameStart = true;
     $("#pause-btn").click(() => app.gamePause());
     $("#restart-btn").click(() => {
@@ -316,6 +398,7 @@ function handleGameData(data) {
     pacman.position.x = data.pacman.loc.x;
     pacman.position.y = data.pacman.loc.y;
     pacman.dir = data.pacman.direction;
+    pacman.isDead = data.gameFreeze;
     ghostsData = data.ghosts;
     items = data.items;
     gameState.score = data.currentScore;
