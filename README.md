@@ -5,4 +5,4 @@
 * Anand Gadsing (dev)
 * Daniel Kuo (dev)
 
-Heroku app: https://pacman-api-team-bigfoot.herokuapp.com/
+Heroku app:  https://pacman-final-team-bigfoot.herokuapp.com/
