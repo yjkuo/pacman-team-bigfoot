@@ -55,6 +55,7 @@ public class GoBackToBaseStrategy implements IUpdateGhostStrategy {
                         } else {
                             IUpdateStrategy leaveTheBase = StrategyFactory.makeStrategyFactory().makeStrategy("leaveTheBase", layout);
                             context.setUpdateStrategy(leaveTheBase);
+                            ((Ghost) context).setDead(false);
                         }
                     }
                     context.setDirection(dir);
