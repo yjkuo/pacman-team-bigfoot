@@ -124,8 +124,8 @@ public class GameStore {
             i = rand.nextInt(layout.length);
             j = rand.nextInt(layout[0].length);
         }
-        Point fruitLoc = new Point(j * passageWidth, i * passageWidth);
-        AItem fruit = new AItem("fruit", fruitLoc, "", 100, passageWidth);
+        Point fruitLoc = new Point(j * passageWidth + passageWidth/2, i * passageWidth + passageWidth/2);
+        AItem fruit = new AItem("fruit", fruitLoc, "", 100, passageWidth - 6);
         items.add(fruit);
     }
 
@@ -314,7 +314,10 @@ public class GameStore {
             removeDot(eaten, true);
         }
         timeElapsed++;
-        if (timeElapsed % 150 == 0) genFruits();
+        if (timeElapsed % 150 == 0) {
+            timeElapsed = 0;
+            genFruits();
+        }
 
     }
 

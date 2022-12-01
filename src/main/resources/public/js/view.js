@@ -190,7 +190,7 @@ function createApp(canvas) {
     let drawFruit = function(row, column) {
         let x = gameStartX + row;
         let y = gameStartY + column;
-        c.drawImage(fruitImg, x, y, passageWidth - 5, passageWidth - 5);
+        c.drawImage(fruitImg, x - passageWidth/2, y - passageWidth/2, passageWidth - 5, passageWidth - 5);
     };
 
     let clear = function() {
