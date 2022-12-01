@@ -21,23 +21,12 @@ public class PacmanController {
         DispatchAdapter da = new DispatchAdapter();
 
         get("/initialize", (request, response) -> {
-            return gson.toJson(da.initializeGame(1, Integer.parseInt(request.queryParams("numberOfGhosts")), Integer.parseInt(request.queryParams("lives"))));
+            return gson.toJson(da.initializeGame(Integer.parseInt(request.queryParams("level")), Integer.parseInt(request.queryParams("numberOfGhosts")), Integer.parseInt(request.queryParams("lives"))));
         });
 
         post("/update", (request, response) -> {
             return gson.toJson(da.updateStore(Integer.parseInt(request.queryParams("direction"))));
         });
-
-//        get("/clear", (request, response) -> {
-//            //TODO
-//            return gson.toJson("Clear the pacman world");
-//        });
-//
-//
-//        post("/setGameParameters", (request, response) -> {
-//            //TODO
-//            return gson.toJson("Set the game parameters");
-//        });
     }
 
     /**

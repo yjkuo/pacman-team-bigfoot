@@ -30,62 +30,12 @@ public class DispatchAdapter {
     }
 
     /**
-     * Pacman eat a dot.
-     * @param dot The eaten dot.
-     */
-    public void eatDot(AItem dot) {
-        //TODO
-    }
-
-    /**
-     * Pacman eat a big dot.
-     * @param bigDot The eaten big dot.
-     */
-    public void eatBigDot(AItem bigDot) {
-        //TODO
-    }
-
-    /**
-     * Pacman eat a fruit.
-     * @param fruit The eaten fruit.
-     */
-    public void eatFruit(AItem fruit) {
-        //TODO
-    }
-
-    /**
-     * Pacman eat a ghost.
-     * @param ghost The eaten ghost.
-     */
-    public void eatGhost(ACharacter ghost) {
-        store.setCurrentScore(store.getCurrentScore() + store.getGhostScore());
-        store.setGhostScore(store.getGhostScore() * 2);
-    }
-
-    /**
      * Call the update method on all the characters to update their position in the pacman world (based on input direction
      * from user).
      */
     public GameStore updateStore(int direction) {
         store.update(direction);
         return store;
-    }
-
-    /**
-     * Remove all PropertyChangeListener.
-     */
-    public void removeAll() {
-        //TODO
-    }
-
-    /**
-     * Set game settings.
-     * @param gameLevel The game level.
-     * @param numGhosts Number of ghosts.
-     * @param numLives Number of lives.
-     */
-    public void setGameParameters(int gameLevel, int numGhosts, int numLives) {
-        //TODO
     }
 
     /**
