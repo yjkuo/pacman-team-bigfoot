@@ -346,18 +346,22 @@ public class GameStore {
             if (pacman.detectCollisionObj(ghost)) {
                 if (ghost.getUpdateStrategy().getName().equals("retreat")) {
                     ghost.setDead(true);
+                    ghost.setFlashing(false);
                     ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("goBackToBase", layout));
+                    currentScore += ghostScore;
+                    ghostScore *= 2;
                 }
                 else if (ghost.getUpdateStrategy().getName().equals("goBackToBase")) {
                 }
                 else {
-                    pacman.reduceLive();
+                    this.lives--;
                     gameFreeze = true;
                     timeStamp = timeElapsed;
                     return;
                 }
             }
         }
+
         AItem eaten = null;
         for (AItem item : items) {
             if (pacman.detectCollisionObj(item)) {

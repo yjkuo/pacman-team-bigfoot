@@ -128,7 +128,10 @@ function createApp(canvas) {
         if (pacman.isDead) {
             app.drawDeadPacman(pacman.position.x, pacman.position.y);
             pacman.deadFrame++;
-            if (pacman.deadFrame > 12) pacman.deadFrame = 12;
+            if (pacman.deadFrame > 12) {
+                pacman.deadFrame = 12;
+                if (gameState.lives == 0) gameOver();
+            }
         } else {
             pacman.deadFrame = 1;
             app.drawPacman(pacman.position.x, pacman.position.y, pacman.state, pacman.dir);
@@ -249,6 +252,16 @@ function createApp(canvas) {
             gameStart = true;
             $("#pause-btn-img").attr('src', './assets/pauseBtn.png');
         }
+    }
+
+    let gameOver = function() {
+        gameStart = false;
+        clearInterval(intervalID);
+        intervalID = -1;
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        writeMessage("Game Over");
+        setTimeout(initialize, 2000);
     }
 
     return {
@@ -399,6 +412,7 @@ function handleGameData(data) {
     pacman.position.y = data.pacman.loc.y;
     pacman.dir = data.pacman.direction;
     pacman.isDead = data.gameFreeze;
+    gameState.lives = data.lives;
     ghostsData = data.ghosts;
     items = data.items;
     gameState.score = data.currentScore;
