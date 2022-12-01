@@ -27,6 +27,8 @@ public class GameStore {
     private int numberOfFruits;
     private int ghostScore = 200;
     private final int ghostFlashingTime = 10000; // how long ghost keeps flashing
+    private int bigDotTotalTime = 20;
+    private int bigDotTimeLeft = 20;
     private final int maxGhosts = 4;
     private transient int[] portals = new int[2];
 //    private PropertyChangeSupport pcs;
@@ -263,7 +265,20 @@ public class GameStore {
     public void removeDot(AItem dot, boolean isEaten) {
         //TODO
         items.remove(dot);
+        if (dot.getName().equals("bigDot")) {
+            bigDotEaten();
+        }
         currentScore += dot.getScore();
+    }
+
+
+    public void bigDotEaten() {
+        for (Ghost ghost: ghosts) {
+            ghost.setUpdateStrategy(StrategyFactory.makeStrategyFactory().makeStrategy("retreat", layout));
+            bigDotTimeLeft = bigDotTotalTime;
+            ghost.setFlashing(true);
+//            ghost.setVel(2);
+        }
     }
 
     /**
