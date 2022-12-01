@@ -53,9 +53,6 @@ public class ChaseStrategy implements IUpdateGhostStrategy{
 
 
 
-
-
-
                     Point currentLoc = context.getLoc();
                     Point newLoc = currentLoc;
                     Point distance = new Point(pacman.getLoc().x - currentLoc.x, pacman.getLoc().y - currentLoc.y);

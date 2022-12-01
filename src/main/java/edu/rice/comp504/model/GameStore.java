@@ -149,11 +149,11 @@ public class GameStore {
     private void resetGhosts() {
         this.ghosts.clear();
         IUpdateStrategy leaveTheBaseStrategy = StrategyFactory.makeStrategyFactory().makeStrategy("leaveTheBase", layout);
-
+        int vel = levelCount == 1 ? 4 : 5;
         for (int i = 0; i < this.numberOfGhosts; i++) {
             String ghostColor = ghostIndexColorMap.get(i);
             Point ghostStartLoc = ghostColorStartLocMap.get(ghostColor);
-            Ghost ghost = new Ghost("ghost", ghostStartLoc, 5, ghostColor, leaveTheBaseStrategy, 2, 20, false, false, 0);
+            Ghost ghost = new Ghost("ghost", ghostStartLoc, vel, ghostColor, leaveTheBaseStrategy, 2, 20, false, false, 0);
 
             this.ghosts.add(ghost);
         }
