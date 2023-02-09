@@ -1,3 +1,7 @@
+## Pacman Game
+
+### UML Diagram
+![](src/UML.png?raw=true "UML")
 ### Members:
 * Swamy Reddi (team lead)
 * Frank Feng (tech lead)
